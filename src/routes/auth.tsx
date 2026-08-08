@@ -78,7 +78,7 @@ function AuthPage() {
         if (error) throw error;
         const { data: sess } = await supabase.auth.getSession();
         if (sess.session) {
-          navigate({ to: "/onboarding" });
+          navigate({ to: "/onboarding", search: { role: intent } });
         } else {
           toast.success("Check your email to confirm your account.");
         }
