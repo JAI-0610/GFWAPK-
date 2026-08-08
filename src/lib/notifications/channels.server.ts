@@ -10,9 +10,9 @@
 export type ChannelResult = {
   ok: boolean;
   status: "sent" | "not_configured" | "failed" | "skipped";
-  provider?: string;
-  providerMessageId?: string;
-  error?: string;
+  provider?: string | undefined;
+  providerMessageId?: string | undefined;
+  error?: string | undefined;
 };
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/twilio";
@@ -83,8 +83,12 @@ export async function sendEmail(to: string, subject: string, body: string, link?
     return { ok: false, status: "not_configured", error: "Email sender domain not configured" };
   }
   try {
-    const mod: { sendEmail?: unknown } = await import("@lovable.dev/email-js").catch(() => ({}) as never);
-    const send = (mod as { sendEmail?: (args: unknown) => Promise<{ id?: string }> }).sendEmail;
+    // Resolved at runtime so the build succeeds before the email package is installed.
+    const specifier = "@lovable.dev/email-js";
+    const mod = (await import(/* @vite-ignore */ specifier).catch(() => null)) as {
+      sendEmail?: (args: unknown) => Promise<{ id?: string }>;
+    } | null;
+    const send = mod?.sendEmail;
     if (typeof send !== "function") {
       return { ok: false, status: "not_configured", error: "Email package not installed" };
     }
