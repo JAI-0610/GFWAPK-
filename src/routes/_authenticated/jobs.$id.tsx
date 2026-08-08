@@ -44,7 +44,24 @@ type Application = {
 
 export const Route = createFileRoute("/_authenticated/jobs/$id")({
   component: JobDetail,
+  head: () => ({
+    meta: [
+      { title: "Farm Job Details | GO FARM WORK" },
+      {
+        name: "description",
+        content: "See wage, location, crew size and perks for this farm job, then apply or hire in one tap.",
+      },
+      { property: "og:title", content: "Farm Job Details | GO FARM WORK" },
+      {
+        property: "og:description",
+        content: "See wage, location, crew size and perks for this farm job, then apply or hire in one tap.",
+      },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
 });
+
 
 function JobDetail() {
   const { id } = Route.useParams();
