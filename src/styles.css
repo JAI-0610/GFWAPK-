@@ -165,6 +165,11 @@
   box-shadow: var(--shadow-lift);
 }
 
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+
 @layer base {
   * {
     border-color: var(--color-border);
