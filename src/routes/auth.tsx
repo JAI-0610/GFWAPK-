@@ -311,7 +311,47 @@ function AuthPage() {
   );
 }
 
+function IntentCard({
+  active,
+  icon: Icon,
+  title,
+  description,
+  onClick,
+}: {
+  active: boolean;
+  icon: typeof Sprout;
+  title: string;
+  description: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={cn(
+        "rounded-2xl border-2 p-4 text-left transition-colors",
+        active
+          ? "border-primary bg-primary/8 shadow-card"
+          : "border-border bg-background hover:border-primary/40",
+      )}
+    >
+      <span
+        className={cn(
+          "grid size-10 place-items-center rounded-xl",
+          active ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground",
+        )}
+      >
+        <Icon className="size-5" />
+      </span>
+      <span className="mt-3 block text-base font-extrabold text-foreground">{title}</span>
+      <span className="mt-1 block text-sm leading-snug text-muted-foreground">{description}</span>
+    </button>
+  );
+}
+
 const TRUST = [
+
   "Verified farms and workers, checked by our team",
   "Escrow payments — money released only after work",
   "Voice-first, works on any phone, in 13 languages",
