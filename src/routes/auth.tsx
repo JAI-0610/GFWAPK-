@@ -158,10 +158,11 @@ function AuthPage() {
           </div>
 
           <div className="flex gap-10">
-            <Stat value="12,400+" label="Farms & workers" />
-            <Stat value="₹9.6 Cr" label="Paid out safely" />
+            <Stat value="Free" label="To join & post work" />
+            <Stat value="Escrow" label="Wages held safely" />
             <Stat value="13" label="Languages" />
           </div>
+
         </div>
       </aside>
 
