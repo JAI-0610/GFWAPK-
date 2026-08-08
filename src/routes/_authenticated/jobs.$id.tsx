@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { notifyApplicationStatus, notifyContractMilestone } from "@/lib/notifications.functions";
 
 type Job = {
   id: string;
@@ -104,6 +105,24 @@ function JobDetail() {
       if (cErr) throw cErr;
       await supabase.from("job_applications").update({ status: "hired" }).eq("id", app.id);
       await supabase.from("jobs").update({ status: "in_progress" }).eq("id", job.id);
+      try {
+        await notifyApplicationStatus({ data: { applicationId: app.id } });
+        const { data: contract } = await supabase
+          .from("contracts")
+          .select("id")
+          .eq("job_id", job.id)
+          .eq("worker_id", app.worker_id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (contract) {
+          await notifyContractMilestone({
+            data: { contractId: contract.id, event: "Contract started", note: `Agreed wage ₹${wage}` },
+          });
+        }
+      } catch (notifyError) {
+        console.error("hire notification failed", notifyError);
+      }
     },
     onSuccess: () => {
       toast.success(t("hire"));
