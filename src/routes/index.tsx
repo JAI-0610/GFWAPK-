@@ -244,24 +244,25 @@ function Landing() {
         </section>
 
         {/* STATS */}
-        <section className="relative z-10 mx-auto -mt-16 max-w-7xl px-4 lg:px-8">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="relative z-10 mx-auto -mt-12 max-w-7xl px-4 sm:-mt-16 lg:px-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {stats.map((s) => (
               <div
                 key={s.label}
-                className="rounded-3xl border border-border bg-card p-6 shadow-lift"
+                className="rounded-2xl border border-border bg-card p-4 shadow-lift sm:rounded-3xl sm:p-6"
               >
-                <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <s.icon className="size-5" />
+                <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary sm:size-11 sm:rounded-2xl">
+                  <s.icon className="size-4 sm:size-5" />
                 </span>
-                <p className="mt-5 font-display text-3xl font-extrabold text-card-foreground">
+                <p className="mt-3 font-display text-2xl font-extrabold leading-tight text-card-foreground sm:mt-5 sm:text-3xl">
                   {s.value}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+                <p className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm">{s.label}</p>
               </div>
             ))}
           </div>
         </section>
+
 
         {/* CATEGORIES */}
         <section id="categories" className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
