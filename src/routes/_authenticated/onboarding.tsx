@@ -43,15 +43,17 @@ function Onboarding() {
           phone: phone.trim() || null,
           village: village.trim() || null,
           district: district.trim() || null,
-          preferred_language: lang,
+          language: lang,
+          onboarded: true,
         })
         .eq("id", user.id);
       if (pErr) throw pErr;
 
       const { error: rErr } = await supabase
         .from("user_roles")
-        .upsert({ user_id: user.id, role }, { onConflict: "user_id,role" });
-      if (rErr) throw rErr;
+        .insert({ user_id: user.id, role });
+      if (rErr && rErr.code !== "23505") throw rErr;
+
 
       await refresh();
       navigate({ to: "/dashboard" });
