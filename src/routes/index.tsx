@@ -489,7 +489,7 @@ function Landing() {
           <div className="rounded-[2rem] bg-field px-6 py-16 text-center text-primary-deep-foreground">
             <h2 className="text-3xl font-extrabold sm:text-5xl">Ready to get farm work done?</h2>
             <p className="mx-auto mt-4 max-w-lg text-sm opacity-85 sm:text-base">
-              Join thousands of farmers and farm owners building a stronger rural economy.
+              Join farmers and farm owners building a stronger rural economy.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
