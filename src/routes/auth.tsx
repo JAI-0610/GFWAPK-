@@ -3,6 +3,8 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
+  Handshake,
+
   Lock,
   Mail,
   ShieldCheck,
