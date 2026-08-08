@@ -7,8 +7,10 @@ import {
   Mail,
   ShieldCheck,
   Sprout,
+  Tractor,
   User,
 } from "lucide-react";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -20,6 +22,8 @@ import { Label } from "@/components/ui/label";
 import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+
 
 type Search = { role?: "worker" | "landlord" | undefined };
 
@@ -45,7 +49,9 @@ function AuthPage() {
   const { t } = useI18n();
   const navigate = useNavigate();
   const { role } = Route.useSearch();
+  const [intent, setIntent] = useState<"worker" | "landlord">(role ?? "worker");
   const [mode, setMode] = useState<"signin" | "signup">("signup");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -68,13 +74,13 @@ function AuthPage() {
           password,
           options: {
             emailRedirectTo: window.location.origin,
-            data: { full_name: name, intended_role: role ?? "worker" },
+            data: { full_name: name, intended_role: intent },
           },
         });
         if (error) throw error;
         const { data: sess } = await supabase.auth.getSession();
         if (sess.session) {
-          navigate({ to: "/onboarding" });
+          navigate({ to: "/onboarding", search: { role: intent } });
         } else {
           toast.success("Check your email to confirm your account.");
         }
@@ -91,9 +97,13 @@ function AuthPage() {
   };
 
   const google = async () => {
+    if (isSignup && typeof window !== "undefined") {
+      window.localStorage.setItem("gfw_intent", intent);
+    }
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
     });
+
     if (result.error) {
       toast.error("Google sign-in failed. Please try again.");
       return;
@@ -166,20 +176,48 @@ function AuthPage() {
           <div className="w-full max-w-md">
             <div className="mb-7">
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-widest text-secondary-foreground">
-                {role === "landlord" ? "Farm owner" : role === "worker" ? "Farm partner" : "Welcome"}
+                {!isSignup ? "Welcome back" : intent === "landlord" ? "Farm owner" : "Farm worker"}
               </span>
               <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-foreground">
                 {isSignup ? "Create your free account" : "Welcome back"}
               </h1>
               <p className="mt-2 text-base text-muted-foreground">
-                {isSignup
-                  ? "Takes under a minute. No fees to join, ever."
-                  : "Sign in to manage your jobs, crew and payments."}
+                {!isSignup
+                  ? "Sign in to manage your jobs, crew and payments."
+                  : intent === "landlord"
+                    ? "Hire verified farm workers for your land. Free to join, no posting fees."
+                    : "Find paid farm work near your village. Free to join, you keep every rupee."}
               </p>
+
             </div>
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-7">
+              {isSignup ? (
+                <fieldset className="mb-6">
+                  <legend className="mb-3 text-sm font-bold text-foreground">
+                    What brings you here?
+                  </legend>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <IntentCard
+                      active={intent === "landlord"}
+                      icon={Tractor}
+                      title="I want to hire"
+                      description="Post farm work and hire trusted workers for my land"
+                      onClick={() => setIntent("landlord")}
+                    />
+                    <IntentCard
+                      active={intent === "worker"}
+                      icon={Sprout}
+                      title="I want to work"
+                      description="Find paid farm work near my village and get hired"
+                      onClick={() => setIntent("worker")}
+                    />
+                  </div>
+                </fieldset>
+              ) : null}
+
               <Button
+
                 type="button"
                 variant="outline"
                 onClick={google}
@@ -282,7 +320,47 @@ function AuthPage() {
   );
 }
 
+function IntentCard({
+  active,
+  icon: Icon,
+  title,
+  description,
+  onClick,
+}: {
+  active: boolean;
+  icon: typeof Sprout;
+  title: string;
+  description: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={cn(
+        "rounded-2xl border-2 p-4 text-left transition-colors",
+        active
+          ? "border-primary bg-primary/8 shadow-card"
+          : "border-border bg-background hover:border-primary/40",
+      )}
+    >
+      <span
+        className={cn(
+          "grid size-10 place-items-center rounded-xl",
+          active ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground",
+        )}
+      >
+        <Icon className="size-5" />
+      </span>
+      <span className="mt-3 block text-base font-extrabold text-foreground">{title}</span>
+      <span className="mt-1 block text-sm leading-snug text-muted-foreground">{description}</span>
+    </button>
+  );
+}
+
 const TRUST = [
+
   "Verified farms and workers, checked by our team",
   "Escrow payments — money released only after work",
   "Voice-first, works on any phone, in 13 languages",
