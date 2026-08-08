@@ -130,7 +130,7 @@ function Field({
       <Label className="text-base">{label}</Label>
       <div className="flex items-center gap-2">
         <Input value={value} onChange={(e) => onChange(e.target.value)} className="h-14 text-lg" />
-        <MicButton onResult={(text) => onChange(text)} />
+        <MicButton onText={(text: string) => onChange(text)} />
       </div>
     </div>
   );
