@@ -10,12 +10,13 @@ import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 
-type Search = { role?: "worker" | "landlord" };
+type Search = { role?: "worker" | "landlord" | undefined };
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): Search => ({
     role: search["role"] === "landlord" ? "landlord" : search["role"] === "worker" ? "worker" : undefined,
   }),
+
   head: () => ({
     meta: [
       { title: "Sign in — GO FARM WORK" },
