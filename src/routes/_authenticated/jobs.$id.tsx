@@ -186,17 +186,30 @@ function JobDetail() {
         <div className="mx-auto flex max-w-2xl items-center gap-3">
           <button
             onClick={() => navigate({ to: "/jobs" })}
-            className="rounded-full bg-card/15 p-2"
+            className="grid size-11 place-items-center rounded-full bg-card/15"
             aria-label={t("back")}
           >
-            <ArrowLeft className="size-6" />
+            <ArrowLeft className="size-6" aria-hidden="true" />
           </button>
           <h1 className="min-w-0 flex-1 truncate text-2xl font-extrabold">{job.title}</h1>
           <ListenButton
             text={`${job.title}. ₹${job.wage_amount} ${wageWord}. ${place}. ${job.description ?? ""}`}
             className="bg-card/15 text-current"
           />
+          <WhatsAppButton
+            variant="outline"
+            label={t("share")}
+            className="border-transparent bg-card/15 text-current"
+            text={jobShareText({
+              id: job.id,
+              title: job.title,
+              wage_amount: Number(job.wage_amount),
+              wageWord,
+              place,
+            })}
+          />
         </div>
+
       </header>
 
       <div className="mx-auto -mt-4 max-w-2xl space-y-3 px-4">
