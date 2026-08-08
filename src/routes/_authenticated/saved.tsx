@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { Bookmark } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
 import { JobCard, type JobRow } from "@/components/JobCard";
 import { supabase } from "@/integrations/supabase/client";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/_authenticated/saved")({
   component: SavedJobs,
@@ -20,6 +23,7 @@ export const Route = createFileRoute("/_authenticated/saved")({
 });
 
 function SavedJobs() {
+  const { t } = useI18n();
   const { data: jobs } = useQuery({
     queryKey: ["saved-jobs-full"],
     queryFn: async () => {
@@ -38,9 +42,13 @@ function SavedJobs() {
         {jobs?.length ? (
           jobs.map((job) => <JobCard key={job.id} job={job} />)
         ) : (
-          <p className="rounded-3xl border border-dashed border-border p-8 text-center text-muted-foreground">
-            No saved jobs yet. Tap the bookmark on any job to keep it here.
-          </p>
+          <EmptyState
+            icon={Bookmark}
+            title={t("emptySavedTitle")}
+            body={t("emptySavedBody")}
+            actionLabel={t("emptySavedCta")}
+            actionTo="/jobs"
+          />
         )}
       </div>
     </AppShell>
