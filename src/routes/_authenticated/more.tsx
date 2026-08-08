@@ -37,6 +37,7 @@ const items = [
   { to: "/wallet", label: "Wallet & escrow", icon: Wallet },
   { to: "/saved", label: "Saved jobs", icon: Bookmark },
   { to: "/alerts", label: "Job alerts", icon: BellRing },
+  { to: "/notifications", label: "Notifications & channels", icon: BellRing },
   { to: "/workers", label: "Find workers", icon: Users },
   { to: "/rates", label: "Wage rates & notices", icon: TrendingUp },
   { to: "/reviews", label: "Ratings & reviews", icon: Star },
