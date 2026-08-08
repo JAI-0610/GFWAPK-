@@ -243,7 +243,7 @@ function Landing() {
         </section>
 
         {/* STATS */}
-        <section className="mx-auto -mt-16 max-w-7xl px-4 lg:px-8">
+        <section className="relative z-10 mx-auto -mt-16 max-w-7xl px-4 lg:px-8">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((s) => (
               <div
