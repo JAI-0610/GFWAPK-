@@ -1,0 +1,1 @@
+DELETE FROM public.market_rates WHERE source = 'Community reports';
