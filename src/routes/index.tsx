@@ -198,7 +198,7 @@ function Landing() {
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary-deep via-primary-deep/85 to-primary-deep/40" />
 
-          <div className="mx-auto max-w-7xl px-4 pb-28 pt-20 text-primary-deep-foreground sm:pb-36 sm:pt-28 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 pb-24 pt-14 text-primary-deep-foreground sm:pb-36 sm:pt-28 lg:px-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary-deep-foreground/25 bg-primary-deep-foreground/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
               India&apos;s farm work marketplace
             </span>
@@ -265,13 +265,13 @@ function Landing() {
 
 
         {/* CATEGORIES */}
-        <section id="categories" className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
+        <section id="categories" className="mx-auto max-w-7xl px-4 py-16 sm:py-24 lg:px-8">
           <SectionHeading
             eyebrow="Categories"
             title="Explore farming categories"
             subtitle="Find skilled agricultural experts for your farming needs."
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid sm:mt-12 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((c) => (
               <article
                 key={c.title}
@@ -288,14 +288,14 @@ function Landing() {
         </section>
 
         {/* HOW IT WORKS */}
-        <section id="how-it-works" className="bg-secondary/50 py-24">
+        <section id="how-it-works" className="bg-secondary/50 py-16 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <SectionHeading
               eyebrow="Simple process"
               title="How GO FARM WORK works"
               subtitle="Simple steps to connect farms with skilled agricultural workers."
             />
-            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid sm:mt-12 gap-5 md:grid-cols-2 lg:grid-cols-4">
               {steps.map((s, i) => (
                 <article
                   key={s.title}
@@ -316,7 +316,7 @@ function Landing() {
         </section>
 
         {/* TWO AUDIENCES */}
-        <section className="mx-auto grid max-w-7xl gap-5 px-4 py-24 lg:grid-cols-2 lg:px-8">
+        <section className="mx-auto grid max-w-7xl gap-5 px-4 py-16 sm:py-24 lg:grid-cols-2 lg:px-8">
           <article
             id="for-owners"
             className="relative isolate overflow-hidden rounded-[2rem] bg-primary-deep p-9 text-primary-deep-foreground"
@@ -402,7 +402,7 @@ function Landing() {
             title="Affordable plans for everyone"
             subtitle="Choose the plan that works best for your farming needs."
           />
-          <div className="mt-12 grid items-start gap-5 lg:grid-cols-3">
+          <div className="mt-8 grid sm:mt-12 items-start gap-5 lg:grid-cols-3">
             {plans.map((p) => (
               <article
                 key={p.name}
@@ -448,7 +448,7 @@ function Landing() {
         </section>
 
         {/* QUOTE */}
-        <section id="quote" className="bg-field py-24 text-primary-deep-foreground">
+        <section id="quote" className="bg-field py-16 sm:py-24 text-primary-deep-foreground">
           <div className="mx-auto max-w-3xl px-4 text-center">
             <Quote className="mx-auto size-8 text-warn" />
             <p className="mt-6 font-display text-2xl font-semibold leading-snug sm:text-3xl">
@@ -469,7 +469,7 @@ function Landing() {
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="mx-auto max-w-3xl px-4 py-24 lg:px-8">
+        <section id="faq" className="mx-auto max-w-3xl px-4 py-16 sm:py-24 lg:px-8">
           <SectionHeading eyebrow="FAQ" title="Frequently asked questions" />
           <Accordion type="single" collapsible className="mt-10">
             {faqs.map((f) => (
