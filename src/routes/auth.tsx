@@ -25,12 +25,17 @@ import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 
-type Search = { role?: "worker" | "landlord" | undefined };
+type Intent = "worker" | "landlord" | "both";
+type Search = { role?: Intent | undefined };
+
+const parseIntent = (value: unknown): Intent | undefined =>
+  value === "landlord" || value === "worker" || value === "both" ? value : undefined;
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    role: search["role"] === "landlord" ? "landlord" : search["role"] === "worker" ? "worker" : undefined,
+    role: parseIntent(search["role"]),
   }),
+
 
   head: () => ({
     meta: [
