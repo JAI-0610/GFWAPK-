@@ -39,8 +39,9 @@ export function listenOnce(
   onEnd?: () => void,
 ): (() => void) | null {
   if (!isVoiceInputSupported()) return null;
-  const w = window as unknown as Record<string, new () => SpeechRecognitionLike>;
+  const w = window as unknown as Record<string, (new () => SpeechRecognitionLike) | undefined>;
   const Ctor = w["SpeechRecognition"] ?? w["webkitSpeechRecognition"];
+  if (!Ctor) return null;
   const recognition = new Ctor();
   recognition.lang = bcp47;
   recognition.interimResults = false;
