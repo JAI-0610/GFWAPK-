@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Bus, Hammer, Home, IndianRupee, MapPin, Sun, Utensils } from "lucide-react";
 
 import { ListenButton } from "@/components/ListenButton";
+import { SaveJobButton } from "@/components/SaveJobButton";
+
 import { useI18n } from "@/lib/i18n";
 
 export type JobRow = {
@@ -77,7 +79,11 @@ export function JobCard({ job }: { job: JobRow }) {
         ) : (
           <span />
         )}
-        <ListenButton text={spoken} />
+        <div className="flex items-center gap-2">
+          <ListenButton text={spoken} />
+          <SaveJobButton jobId={job.id} />
+        </div>
+
       </div>
     </Link>
   );

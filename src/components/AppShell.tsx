@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Briefcase, Home, MessageCircle, Sparkles, User, Wallet } from "lucide-react";
+import { Briefcase, Grid3x3, Home, MessageCircle, Sparkles, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { LanguagePicker } from "@/components/LanguagePicker";
@@ -11,8 +11,9 @@ const NAV = [
   { to: "/jobs", icon: Briefcase, key: "findWork" },
   { to: "/assistant", icon: Sparkles, key: "assistant" },
   { to: "/messages", icon: MessageCircle, key: "messages" },
-  { to: "/wallet", icon: Wallet, key: "wallet" },
+  { to: "/more", icon: Grid3x3, key: "more" },
 ] as const;
+
 
 export function AppShell({
   title,
@@ -68,8 +69,9 @@ export function AppShell({
               >
                 <Icon className={cn("size-6", active && "stroke-[2.5]")} />
                 <span className="max-w-full truncate px-1">
-                  {key === "appName" ? "Home" : t(key)}
+                  {key === "appName" ? "Home" : key === "more" ? "More" : t(key)}
                 </span>
+
               </Link>
             );
           })}

@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.refresh_profile_rating() FROM PUBLIC, anon, authenticated;
