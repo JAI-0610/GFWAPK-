@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { Bus, Hammer, Home, IndianRupee, MapPin, Sun, Utensils } from "lucide-react";
+import { Bus, Hammer, Home, IndianRupee, Lock, MapPin, Sun, Utensils } from "lucide-react";
 
 import { ListenButton } from "@/components/ListenButton";
 import { SaveJobButton } from "@/components/SaveJobButton";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 import { useI18n } from "@/lib/i18n";
+import { jobShareText } from "@/lib/whatsapp";
+
 
 export type JobRow = {
   id: string;
@@ -71,20 +74,31 @@ export function JobCard({ job }: { job: JobRow }) {
         {job.tools_provided ? <Perk icon={Hammer} label={t("toolsProvided")} /> : null}
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-2">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
         {job.escrow_funded ? (
-          <span className="rounded-full bg-primary/12 px-3 py-1.5 text-xs font-bold text-primary">
-            🔒 {t("moneyLocked")}
+          <span className="inline-flex items-center gap-1 rounded-full bg-primary/12 px-3 py-1.5 text-xs font-bold text-primary">
+            <Lock className="size-3.5" aria-hidden="true" /> {t("moneyLocked")}
           </span>
         ) : (
           <span />
         )}
         <div className="flex items-center gap-2">
           <ListenButton text={spoken} />
+          <WhatsAppButton
+            variant="outline"
+            label={t("share")}
+            text={jobShareText({
+              id: job.id,
+              title: job.title,
+              wage_amount: Number(job.wage_amount),
+              wageWord,
+              place,
+            })}
+          />
           <SaveJobButton jobId={job.id} />
         </div>
-
       </div>
+
     </Link>
   );
 }

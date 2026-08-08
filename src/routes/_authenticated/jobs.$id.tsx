@@ -4,14 +4,19 @@ import { ArrowLeft, IndianRupee, MapPin, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { EmptyState } from "@/components/EmptyState";
 import { ListenButton } from "@/components/ListenButton";
 import { MicButton } from "@/components/MicButton";
+import { StatusBadge } from "@/components/StatusBadge";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { notifyApplicationStatus, notifyContractMilestone } from "@/lib/notifications.functions";
+import { hireConfirmText, jobShareText } from "@/lib/whatsapp";
+
 
 type Job = {
   id: string;
@@ -39,7 +44,24 @@ type Application = {
 
 export const Route = createFileRoute("/_authenticated/jobs/$id")({
   component: JobDetail,
+  head: () => ({
+    meta: [
+      { title: "Farm Job Details | GO FARM WORK" },
+      {
+        name: "description",
+        content: "See wage, location, crew size and perks for this farm job, then apply or hire in one tap.",
+      },
+      { property: "og:title", content: "Farm Job Details | GO FARM WORK" },
+      {
+        property: "og:description",
+        content: "See wage, location, crew size and perks for this farm job, then apply or hire in one tap.",
+      },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
 });
+
 
 function JobDetail() {
   const { id } = Route.useParams();
@@ -72,7 +94,22 @@ function JobDetail() {
     },
   });
 
+  const workerIds = (apps ?? []).map((a) => a.worker_id);
+  const { data: workers } = useQuery({
+    queryKey: ["job-app-workers", id, workerIds.join(",")],
+    enabled: isOwner && workerIds.length > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, full_name, phone")
+        .in("id", workerIds);
+      if (error) throw error;
+      return (data ?? []) as { id: string; full_name: string | null; phone: string | null }[];
+    },
+  });
+
   const myApp = apps?.find((a) => a.worker_id === user?.id);
+
 
   const apply = useMutation({
     mutationFn: async () => {
@@ -149,17 +186,30 @@ function JobDetail() {
         <div className="mx-auto flex max-w-2xl items-center gap-3">
           <button
             onClick={() => navigate({ to: "/jobs" })}
-            className="rounded-full bg-card/15 p-2"
+            className="grid size-11 place-items-center rounded-full bg-card/15"
             aria-label={t("back")}
           >
-            <ArrowLeft className="size-6" />
+            <ArrowLeft className="size-6" aria-hidden="true" />
           </button>
           <h1 className="min-w-0 flex-1 truncate text-2xl font-extrabold">{job.title}</h1>
           <ListenButton
             text={`${job.title}. ₹${job.wage_amount} ${wageWord}. ${place}. ${job.description ?? ""}`}
             className="bg-card/15 text-current"
           />
+          <WhatsAppButton
+            variant="outline"
+            label={t("share")}
+            className="border-transparent bg-card/15 text-current"
+            text={jobShareText({
+              id: job.id,
+              title: job.title,
+              wage_amount: Number(job.wage_amount),
+              wageWord,
+              place,
+            })}
+          />
         </div>
+
       </header>
 
       <div className="mx-auto -mt-4 max-w-2xl space-y-3 px-4">
@@ -194,32 +244,73 @@ function JobDetail() {
             </h2>
             <div className="mt-3 space-y-3">
               {apps?.length ? (
-                apps.map((a) => (
-                  <div
-                    key={a.id}
-                    className="flex items-start justify-between gap-3 rounded-2xl bg-secondary p-4"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-secondary-foreground">
-                        {a.message || "—"}
-                      </p>
-                      {a.counter_wage ? (
-                        <p className="mt-1 text-sm font-bold text-money">₹{Number(a.counter_wage)}</p>
-                      ) : null}
-                      <p className="mt-1 text-xs uppercase text-muted-foreground">{a.status}</p>
+                apps.map((a) => {
+                  const worker = workers?.find((w) => w.id === a.worker_id);
+                  const wage = Number(a.counter_wage ?? job.wage_amount);
+                  return (
+                    <div key={a.id} className="rounded-2xl bg-secondary p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-secondary-foreground">
+                            {worker?.full_name || t("worker")}
+                          </p>
+                          <p className="mt-1 text-sm text-secondary-foreground">{a.message || "—"}</p>
+                          {a.counter_wage ? (
+                            <p className="mt-1 text-sm font-bold text-money">₹{wage}</p>
+                          ) : null}
+                        </div>
+                        <StatusBadge status={a.status} />
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {a.status !== "hired" ? (
+                          <Button onClick={() => hire.mutate(a)} className="h-12 font-bold">
+                            {t("hire")}
+                          </Button>
+                        ) : (
+                          <WhatsAppButton
+                            label={t("confirmHireOnWhatsApp")}
+                            phone={worker?.phone}
+                            text={hireConfirmText({
+                              jobTitle: job.title,
+                              workerName: worker?.full_name,
+                              wage,
+                              wageWord,
+                              startDate: job.start_date,
+                            })}
+                          />
+                        )}
+                        <WhatsAppButton
+                          variant="outline"
+                          label={t("chatOnWhatsApp")}
+                          phone={worker?.phone}
+                          text={`${t("appName")}: ${job.title}`}
+                        />
+                      </div>
                     </div>
-                    {a.status !== "hired" ? (
-                      <Button onClick={() => hire.mutate(a)} className="h-11 font-bold">
-                        {t("hire")}
-                      </Button>
-                    ) : null}
-                  </div>
-                ))
+                  );
+                })
               ) : (
-                <p className="text-muted-foreground">—</p>
+                <EmptyState
+                  icon={Users}
+                  title={t("emptyApplicantsTitle")}
+                  body={t("emptyApplicantsBody")}
+                  action={
+                    <WhatsAppButton
+                      label={t("shareOnWhatsApp")}
+                      text={jobShareText({
+                        id: job.id,
+                        title: job.title,
+                        wage_amount: Number(job.wage_amount),
+                        wageWord,
+                        place,
+                      })}
+                    />
+                  }
+                />
               )}
             </div>
           </div>
+
         ) : (
           <div className="rounded-3xl border border-border bg-card p-5 shadow-card">
             {myApp ? (

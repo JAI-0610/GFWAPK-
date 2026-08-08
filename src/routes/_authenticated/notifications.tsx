@@ -5,7 +5,10 @@ import { Bell, BellRing, CheckCheck, Loader2, Mail, MessageCircle, Smartphone } 
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
+
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -41,7 +44,9 @@ const TOPICS = [
 ];
 
 function NotificationsPage() {
+  const { t } = useI18n();
   const qc = useQueryClient();
+
   const fetchList = useServerFn(listNotifications);
   const fetchPrefs = useServerFn(getNotificationPrefs);
   const savePrefs = useServerFn(updateNotificationPrefs);
@@ -87,12 +92,14 @@ function NotificationsPage() {
               <Loader2 className="size-4 animate-spin" /> Loading…
             </p>
           ) : (list.data?.items.length ?? 0) === 0 ? (
-            <div className="rounded-xl border border-dashed border-border p-6 text-center">
-              <Bell className="mx-auto size-6 text-muted-foreground" />
-              <p className="mt-2 text-sm text-muted-foreground">
-                No notifications yet. Job alerts and contract updates will appear here.
-              </p>
-            </div>
+            <EmptyState
+              icon={Bell}
+              title={t("emptyNotificationsTitle")}
+              body={t("emptyNotificationsBody")}
+              actionLabel={t("emptyJobsCta")}
+              actionTo="/alerts"
+            />
+
           ) : (
             list.data?.items.map((n) => (
               <button

@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import { MessagesSquare } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
 import { MicButton } from "@/components/MicButton";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
@@ -92,25 +95,35 @@ function MessagesPage() {
             );
           })
         ) : (
-          <p className="rounded-3xl border border-dashed border-border p-8 text-center text-muted-foreground">
-            —
-          </p>
+          <EmptyState
+            icon={MessagesSquare}
+            title={t("emptyMessagesTitle")}
+            body={t("emptyMessagesBody")}
+            actionLabel={t("emptyMessagesCta")}
+            actionTo="/jobs"
+          />
         )}
         <div ref={bottom} />
       </div>
 
       <div className="sticky bottom-20 flex items-center gap-2 rounded-3xl border border-border bg-card p-2 shadow-lift">
+        <label htmlFor="message-draft" className="sr-only">
+          {t("chat")}
+        </label>
         <Input
+          id="message-draft"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
+          placeholder={t("chat")}
           className="h-12 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
         />
         <MicButton onText={(text: string) => setDraft(text)} />
-        <Button onClick={send} className="h-12 font-bold">
+        <Button onClick={send} aria-label={t("send")} className="h-12 min-w-16 font-bold">
           {t("send")}
         </Button>
       </div>
+
     </AppShell>
   );
 }

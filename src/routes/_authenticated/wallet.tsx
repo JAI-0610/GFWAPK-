@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDownLeft, ArrowUpRight, Lock } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Lock, Wallet } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { paymentConfirmText } from "@/lib/whatsapp";
+
 
 type Txn = {
   id: string;
@@ -103,14 +107,30 @@ function WalletPage() {
                 <span className="font-extrabold text-card-foreground">
                   {credit ? "+" : "−"}₹{Number(tx.amount)}
                 </span>
+                {!credit ? (
+                  <WhatsAppButton
+                    variant="outline"
+                    label={t("confirm")}
+                    className="px-3"
+                    text={paymentConfirmText({
+                      amount: Number(tx.amount),
+                      note: tx.note,
+                    })}
+                  />
+                ) : null}
               </div>
             );
           })
         ) : (
-          <p className="rounded-3xl border border-dashed border-border p-8 text-center text-muted-foreground">
-            —
-          </p>
+          <EmptyState
+            icon={Wallet}
+            title={t("wallet")}
+            body={t("emptyJobsBody")}
+            actionLabel={t("emptyJobsCta")}
+            actionTo="/jobs"
+          />
         )}
+
       </div>
     </AppShell>
   );
