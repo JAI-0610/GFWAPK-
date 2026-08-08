@@ -4,14 +4,19 @@ import { ArrowLeft, IndianRupee, MapPin, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { EmptyState } from "@/components/EmptyState";
 import { ListenButton } from "@/components/ListenButton";
 import { MicButton } from "@/components/MicButton";
+import { StatusBadge } from "@/components/StatusBadge";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { notifyApplicationStatus, notifyContractMilestone } from "@/lib/notifications.functions";
+import { hireConfirmText, jobShareText } from "@/lib/whatsapp";
+
 
 type Job = {
   id: string;
