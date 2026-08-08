@@ -5,7 +5,10 @@ import { Bell, BellRing, CheckCheck, Loader2, Mail, MessageCircle, Smartphone } 
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n";
+
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -41,7 +44,9 @@ const TOPICS = [
 ];
 
 function NotificationsPage() {
+  const { t } = useI18n();
   const qc = useQueryClient();
+
   const fetchList = useServerFn(listNotifications);
   const fetchPrefs = useServerFn(getNotificationPrefs);
   const savePrefs = useServerFn(updateNotificationPrefs);
