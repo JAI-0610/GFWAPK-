@@ -183,7 +183,32 @@ function AuthPage() {
             </div>
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-7">
+              {isSignup ? (
+                <fieldset className="mb-6">
+                  <legend className="mb-3 text-sm font-bold text-foreground">
+                    What brings you here?
+                  </legend>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <IntentCard
+                      active={intent === "landlord"}
+                      icon={Tractor}
+                      title="I want to hire"
+                      description="Post farm work and hire trusted workers for my land"
+                      onClick={() => setIntent("landlord")}
+                    />
+                    <IntentCard
+                      active={intent === "worker"}
+                      icon={Sprout}
+                      title="I want to work"
+                      description="Find paid farm work near my village and get hired"
+                      onClick={() => setIntent("worker")}
+                    />
+                  </div>
+                </fieldset>
+              ) : null}
+
               <Button
+
                 type="button"
                 variant="outline"
                 onClick={google}
