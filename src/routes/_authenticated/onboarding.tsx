@@ -13,12 +13,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type Search = { role?: "worker" | "landlord" | undefined };
+type Intent = "worker" | "landlord" | "both";
+type Search = { role?: Intent | undefined };
+
+const parseIntent = (value: unknown): Intent | undefined =>
+  value === "landlord" || value === "worker" || value === "both" ? value : undefined;
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    role:
-      search["role"] === "landlord" ? "landlord" : search["role"] === "worker" ? "worker" : undefined,
+    role: parseIntent(search["role"]),
   }),
   component: Onboarding,
 });
@@ -28,14 +31,15 @@ function Onboarding() {
   const { user, refresh } = useAuth();
   const navigate = useNavigate();
   const { role: intendedRole } = Route.useSearch();
-  const [role, setRole] = useState<"worker" | "landlord">(() => {
+  const [role, setRole] = useState<Intent>(() => {
     if (intendedRole) return intendedRole;
     if (typeof window !== "undefined") {
-      const stored = window.localStorage.getItem("gfw_intent");
-      if (stored === "landlord" || stored === "worker") return stored;
+      const stored = parseIntent(window.localStorage.getItem("gfw_intent"));
+      if (stored) return stored;
     }
     return "worker";
   });
+
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
