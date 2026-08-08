@@ -39,7 +39,15 @@ export function AppShell({
           <div className="flex shrink-0 items-center gap-2">
             {action}
             <LanguagePicker compact />
+            <Link
+              to="/profile"
+              aria-label="Profile"
+              className="grid size-11 place-items-center rounded-full border border-border/40 bg-card/15"
+            >
+              <User className="size-5" />
+            </Link>
           </div>
+
         </div>
       </header>
 
