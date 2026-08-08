@@ -69,8 +69,9 @@ export function AppShell({
               >
                 <Icon className={cn("size-6", active && "stroke-[2.5]")} />
                 <span className="max-w-full truncate px-1">
-                  {key === "appName" ? "Home" : t(key)}
+                  {key === "appName" ? "Home" : key === "more" ? "More" : t(key)}
                 </span>
+
               </Link>
             );
           })}
