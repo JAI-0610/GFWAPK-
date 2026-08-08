@@ -7,8 +7,10 @@ import {
   Mail,
   ShieldCheck,
   Sprout,
+  Tractor,
   User,
 } from "lucide-react";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
