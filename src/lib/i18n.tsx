@@ -84,7 +84,66 @@ const en: Dict = {
   inEscrow: "Locked in escrow",
   askAnything: "Ask anything about work, wages or farming",
   send: "Send",
+
+  // Actions
+  share: "Share",
+  shareOnWhatsApp: "Share on WhatsApp",
+  chatOnWhatsApp: "Chat on WhatsApp",
+  confirmHireOnWhatsApp: "Confirm hire on WhatsApp",
+  confirmPaymentOnWhatsApp: "Confirm payment on WhatsApp",
+  copyLink: "Copy link",
+  linkCopied: "Link copied",
+  retry: "Try again",
+  cancel: "Cancel",
+  confirm: "Confirm",
+  yes: "Yes",
+  no: "No",
+  next: "Next",
+  previous: "Previous",
+  repeat: "Repeat",
+  loading: "Loading…",
+
+  // Statuses
+  statusOpen: "Open",
+  statusInProgress: "In progress",
+  statusCompleted: "Completed",
+  statusCancelled: "Cancelled",
+  statusApplied: "Applied",
+  statusPending: "Pending",
+  statusHired: "Hired",
+  statusRejected: "Not selected",
+  statusPaid: "Paid",
+  statusFunded: "Money locked",
+
+  // Voice flow
+  voiceMode: "Voice mode",
+  voiceModeOn: "Voice mode on",
+  voiceModeOff: "Voice mode off",
+  voiceHelp: "Say next, repeat, save or apply. You can also tap the buttons below.",
+  voicePromptJob: "Here is the work.",
+  voicePromptAsk: "Do you want to apply? Say yes or no.",
+  voiceConfirmApply: "Your application is sent.",
+  voiceNoMore: "That is all the work near you for now.",
+  voiceNotSupported: "Voice is not available on this phone. Please use the buttons.",
+  textFallback: "Prefer typing? Use the buttons and search box below.",
+  listening: "Listening…",
+
+  // Empty states
+  emptyJobsTitle: "No work posted yet",
+  emptyJobsBody: "New farm work near your village will show up here. Set a job alert so we tell you first.",
+  emptyJobsCta: "Create a job alert",
+  emptySavedTitle: "No saved work yet",
+  emptySavedBody: "Tap the bookmark on any job to keep it here and decide later.",
+  emptySavedCta: "Browse work",
+  emptyMessagesTitle: "No messages yet",
+  emptyMessagesBody: "When you apply or hire, your chat with the other person starts here.",
+  emptyMessagesCta: "Find work",
+  emptyApplicantsTitle: "No applicants yet",
+  emptyApplicantsBody: "Share this job on WhatsApp so workers near you can see it.",
+  emptyNotificationsTitle: "No notifications yet",
+  emptyNotificationsBody: "Job alerts, application updates and payment news will appear here.",
 };
+
 
 const hi: Dict = {
   appName: "गो फ़ार्म वर्क",
