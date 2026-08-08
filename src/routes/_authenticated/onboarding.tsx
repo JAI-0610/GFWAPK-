@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Sprout, Tractor } from "lucide-react";
+import { Handshake, Sprout, Tractor } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -13,12 +13,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
-type Search = { role?: "worker" | "landlord" | undefined };
+type Intent = "worker" | "landlord" | "both";
+type Search = { role?: Intent | undefined };
+
+const parseIntent = (value: unknown): Intent | undefined =>
+  value === "landlord" || value === "worker" || value === "both" ? value : undefined;
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    role:
-      search["role"] === "landlord" ? "landlord" : search["role"] === "worker" ? "worker" : undefined,
+    role: parseIntent(search["role"]),
   }),
   component: Onboarding,
 });
@@ -28,14 +31,15 @@ function Onboarding() {
   const { user, refresh } = useAuth();
   const navigate = useNavigate();
   const { role: intendedRole } = Route.useSearch();
-  const [role, setRole] = useState<"worker" | "landlord">(() => {
+  const [role, setRole] = useState<Intent>(() => {
     if (intendedRole) return intendedRole;
     if (typeof window !== "undefined") {
-      const stored = window.localStorage.getItem("gfw_intent");
-      if (stored === "landlord" || stored === "worker") return stored;
+      const stored = parseIntent(window.localStorage.getItem("gfw_intent"));
+      if (stored) return stored;
     }
     return "worker";
   });
+
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -64,10 +68,13 @@ function Onboarding() {
         .eq("id", user.id);
       if (pErr) throw pErr;
 
+      const rolesToAdd: Array<"worker" | "landlord"> =
+        role === "both" ? ["worker", "landlord"] : [role];
       const { error: rErr } = await supabase
         .from("user_roles")
-        .insert({ user_id: user.id, role });
+        .insert(rolesToAdd.map((r) => ({ user_id: user.id, role: r })));
       if (rErr && rErr.code !== "23505") throw rErr;
+
 
 
       await refresh();
@@ -103,7 +110,16 @@ function Onboarding() {
             label={t("landlord")}
             onClick={() => setRole("landlord")}
           />
+          <div className="col-span-2">
+            <RoleCard
+              active={role === "both"}
+              icon={Handshake}
+              label="Both — hire & work"
+              onClick={() => setRole("both")}
+            />
+          </div>
         </div>
+
 
         <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-card">
           <Field label={t("name")} value={fullName} onChange={setFullName} />

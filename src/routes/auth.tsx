@@ -3,6 +3,8 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
+  Handshake,
+
   Lock,
   Mail,
   ShieldCheck,
@@ -25,12 +27,17 @@ import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 
-type Search = { role?: "worker" | "landlord" | undefined };
+type Intent = "worker" | "landlord" | "both";
+type Search = { role?: Intent | undefined };
+
+const parseIntent = (value: unknown): Intent | undefined =>
+  value === "landlord" || value === "worker" || value === "both" ? value : undefined;
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    role: search["role"] === "landlord" ? "landlord" : search["role"] === "worker" ? "worker" : undefined,
+    role: parseIntent(search["role"]),
   }),
+
 
   head: () => ({
     meta: [
@@ -49,7 +56,7 @@ function AuthPage() {
   const { t } = useI18n();
   const navigate = useNavigate();
   const { role } = Route.useSearch();
-  const [intent, setIntent] = useState<"worker" | "landlord">(role ?? "worker");
+  const [intent, setIntent] = useState<Intent>(role ?? "worker");
   const [mode, setMode] = useState<"signin" | "signup">("signup");
 
   const [email, setEmail] = useState("");
@@ -176,7 +183,13 @@ function AuthPage() {
           <div className="w-full max-w-md">
             <div className="mb-7">
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-widest text-secondary-foreground">
-                {!isSignup ? "Welcome back" : intent === "landlord" ? "Farm owner" : "Farm worker"}
+                {!isSignup
+                  ? "Welcome back"
+                  : intent === "landlord"
+                    ? "Farm owner"
+                    : intent === "both"
+                      ? "Owner & worker"
+                      : "Farm worker"}
               </span>
               <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-foreground">
                 {isSignup ? "Create your free account" : "Welcome back"}
@@ -186,7 +199,9 @@ function AuthPage() {
                   ? "Sign in to manage your jobs, crew and payments."
                   : intent === "landlord"
                     ? "Hire verified farm workers for your land. Free to join, no posting fees."
-                    : "Find paid farm work near your village. Free to join, you keep every rupee."}
+                    : intent === "both"
+                      ? "Hire crews for your land and take up paid work too — one account, both sides."
+                      : "Find paid farm work near your village. Free to join, you keep every rupee."}
               </p>
 
             </div>
@@ -212,9 +227,19 @@ function AuthPage() {
                       description="Find paid farm work near my village and get hired"
                       onClick={() => setIntent("worker")}
                     />
+                    <div className="sm:col-span-2">
+                      <IntentCard
+                        active={intent === "both"}
+                        icon={Handshake}
+                        title="I want to do both"
+                        description="Hire workers for my land and also take up paid farm work"
+                        onClick={() => setIntent("both")}
+                      />
+                    </div>
                   </div>
                 </fieldset>
               ) : null}
+
 
               <Button
 
