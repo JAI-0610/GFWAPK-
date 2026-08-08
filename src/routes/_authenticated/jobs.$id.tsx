@@ -72,7 +72,22 @@ function JobDetail() {
     },
   });
 
+  const workerIds = (apps ?? []).map((a) => a.worker_id);
+  const { data: workers } = useQuery({
+    queryKey: ["job-app-workers", id, workerIds.join(",")],
+    enabled: isOwner && workerIds.length > 0,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, full_name, phone")
+        .in("id", workerIds);
+      if (error) throw error;
+      return (data ?? []) as { id: string; full_name: string | null; phone: string | null }[];
+    },
+  });
+
   const myApp = apps?.find((a) => a.worker_id === user?.id);
+
 
   const apply = useMutation({
     mutationFn: async () => {
