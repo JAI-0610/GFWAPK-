@@ -110,7 +110,16 @@ function Onboarding() {
             label={t("landlord")}
             onClick={() => setRole("landlord")}
           />
+          <div className="col-span-2">
+            <RoleCard
+              active={role === "both"}
+              icon={Handshake}
+              label="Both — hire & work"
+              onClick={() => setRole("both")}
+            />
+          </div>
         </div>
+
 
         <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-card">
           <Field label={t("name")} value={fullName} onChange={setFullName} />
