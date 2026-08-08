@@ -13,7 +13,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
+type Search = { role?: "worker" | "landlord" | undefined };
+
 export const Route = createFileRoute("/_authenticated/onboarding")({
+  validateSearch: (search: Record<string, unknown>): Search => ({
+    role:
+      search["role"] === "landlord" ? "landlord" : search["role"] === "worker" ? "worker" : undefined,
+  }),
   component: Onboarding,
 });
 
@@ -21,7 +27,16 @@ function Onboarding() {
   const { t, lang } = useI18n();
   const { user, refresh } = useAuth();
   const navigate = useNavigate();
-  const [role, setRole] = useState<"worker" | "landlord">("worker");
+  const { role: intendedRole } = Route.useSearch();
+  const [role, setRole] = useState<"worker" | "landlord">(() => {
+    if (intendedRole) return intendedRole;
+    if (typeof window !== "undefined") {
+      const stored = window.localStorage.getItem("gfw_intent");
+      if (stored === "landlord" || stored === "worker") return stored;
+    }
+    return "worker";
+  });
+
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [village, setVillage] = useState("");
