@@ -54,11 +54,12 @@ export const Route = createFileRoute("/")({
 });
 
 const stats = [
-  { icon: Users, value: "12,400+", label: "Skilled Farm Partners" },
-  { icon: Briefcase, value: "3,800+", label: "Farm Owners on board" },
-  { icon: BadgeCheck, value: "27,100+", label: "Jobs Completed" },
-  { icon: IndianRupee, value: "₹9.6 Cr", label: "Earned by Workers" },
+  { icon: BadgeCheck, value: "Verified", label: "Profiles checked before hiring" },
+  { icon: IndianRupee, value: "0%", label: "Fee taken from worker wages" },
+  { icon: Users, value: "13", label: "Indian languages supported" },
+  { icon: Briefcase, value: "Escrow", label: "Wages held safely until work is done" },
 ];
+
 
 const categories = [
   {
