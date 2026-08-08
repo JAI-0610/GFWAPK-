@@ -54,11 +54,12 @@ export const Route = createFileRoute("/")({
 });
 
 const stats = [
-  { icon: Users, value: "12,400+", label: "Skilled Farm Partners" },
-  { icon: Briefcase, value: "3,800+", label: "Farm Owners on board" },
-  { icon: BadgeCheck, value: "27,100+", label: "Jobs Completed" },
-  { icon: IndianRupee, value: "₹9.6 Cr", label: "Earned by Workers" },
+  { icon: BadgeCheck, value: "Verified", label: "Profiles checked before hiring" },
+  { icon: IndianRupee, value: "0%", label: "Fee taken from worker wages" },
+  { icon: Users, value: "13", label: "Indian languages supported" },
+  { icon: Briefcase, value: "Escrow", label: "Wages held safely until work is done" },
 ];
+
 
 const categories = [
   {
@@ -102,7 +103,7 @@ const steps = [
   {
     icon: Search,
     title: "Find Opportunities",
-    body: "Browse thousands of farm jobs or search for skilled agricultural workers based on your needs.",
+    body: "Browse farm jobs near your village or search for skilled agricultural workers based on your needs.",
   },
   {
     icon: Handshake,
@@ -488,7 +489,7 @@ function Landing() {
           <div className="rounded-[2rem] bg-field px-6 py-16 text-center text-primary-deep-foreground">
             <h2 className="text-3xl font-extrabold sm:text-5xl">Ready to get farm work done?</h2>
             <p className="mx-auto mt-4 max-w-lg text-sm opacity-85 sm:text-base">
-              Join thousands of farmers and farm owners building a stronger rural economy.
+              Join farmers and farm owners building a stronger rural economy.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link
