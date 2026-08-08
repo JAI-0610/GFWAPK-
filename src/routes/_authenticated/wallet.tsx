@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDownLeft, ArrowUpRight, Lock } from "lucide-react";
+import { ArrowDownLeft, ArrowUpRight, Lock, Wallet } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { paymentConfirmText } from "@/lib/whatsapp";
+
 
 type Txn = {
   id: string;
