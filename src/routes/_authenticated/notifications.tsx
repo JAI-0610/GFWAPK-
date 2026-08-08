@@ -87,12 +87,14 @@ function NotificationsPage() {
               <Loader2 className="size-4 animate-spin" /> Loading…
             </p>
           ) : (list.data?.items.length ?? 0) === 0 ? (
-            <div className="rounded-xl border border-dashed border-border p-6 text-center">
-              <Bell className="mx-auto size-6 text-muted-foreground" />
-              <p className="mt-2 text-sm text-muted-foreground">
-                No notifications yet. Job alerts and contract updates will appear here.
-              </p>
-            </div>
+            <EmptyState
+              icon={Bell}
+              title={t("emptyNotificationsTitle")}
+              body={t("emptyNotificationsBody")}
+              actionLabel={t("emptyJobsCta")}
+              actionTo="/alerts"
+            />
+
           ) : (
             list.data?.items.map((n) => (
               <button
