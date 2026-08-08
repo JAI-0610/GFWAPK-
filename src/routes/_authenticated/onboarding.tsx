@@ -68,10 +68,13 @@ function Onboarding() {
         .eq("id", user.id);
       if (pErr) throw pErr;
 
+      const rolesToAdd: Array<"worker" | "landlord"> =
+        role === "both" ? ["worker", "landlord"] : [role];
       const { error: rErr } = await supabase
         .from("user_roles")
-        .insert({ user_id: user.id, role });
+        .insert(rolesToAdd.map((r) => ({ user_id: user.id, role: r })));
       if (rErr && rErr.code !== "23505") throw rErr;
+
 
 
       await refresh();
