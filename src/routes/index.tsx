@@ -103,7 +103,7 @@ const steps = [
   {
     icon: Search,
     title: "Find Opportunities",
-    body: "Browse thousands of farm jobs or search for skilled agricultural workers based on your needs.",
+    body: "Browse farm jobs near your village or search for skilled agricultural workers based on your needs.",
   },
   {
     icon: Handshake,
