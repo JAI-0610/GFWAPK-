@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Sprout, Tractor } from "lucide-react";
+import { Handshake, Sprout, Tractor } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
