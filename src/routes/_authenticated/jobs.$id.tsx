@@ -209,32 +209,73 @@ function JobDetail() {
             </h2>
             <div className="mt-3 space-y-3">
               {apps?.length ? (
-                apps.map((a) => (
-                  <div
-                    key={a.id}
-                    className="flex items-start justify-between gap-3 rounded-2xl bg-secondary p-4"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-secondary-foreground">
-                        {a.message || "—"}
-                      </p>
-                      {a.counter_wage ? (
-                        <p className="mt-1 text-sm font-bold text-money">₹{Number(a.counter_wage)}</p>
-                      ) : null}
-                      <p className="mt-1 text-xs uppercase text-muted-foreground">{a.status}</p>
+                apps.map((a) => {
+                  const worker = workers?.find((w) => w.id === a.worker_id);
+                  const wage = Number(a.counter_wage ?? job.wage_amount);
+                  return (
+                    <div key={a.id} className="rounded-2xl bg-secondary p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-secondary-foreground">
+                            {worker?.full_name || t("worker")}
+                          </p>
+                          <p className="mt-1 text-sm text-secondary-foreground">{a.message || "—"}</p>
+                          {a.counter_wage ? (
+                            <p className="mt-1 text-sm font-bold text-money">₹{wage}</p>
+                          ) : null}
+                        </div>
+                        <StatusBadge status={a.status} />
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {a.status !== "hired" ? (
+                          <Button onClick={() => hire.mutate(a)} className="h-12 font-bold">
+                            {t("hire")}
+                          </Button>
+                        ) : (
+                          <WhatsAppButton
+                            label={t("confirmHireOnWhatsApp")}
+                            phone={worker?.phone}
+                            text={hireConfirmText({
+                              jobTitle: job.title,
+                              workerName: worker?.full_name,
+                              wage,
+                              wageWord,
+                              startDate: job.start_date,
+                            })}
+                          />
+                        )}
+                        <WhatsAppButton
+                          variant="outline"
+                          label={t("chatOnWhatsApp")}
+                          phone={worker?.phone}
+                          text={`${t("appName")}: ${job.title}`}
+                        />
+                      </div>
                     </div>
-                    {a.status !== "hired" ? (
-                      <Button onClick={() => hire.mutate(a)} className="h-11 font-bold">
-                        {t("hire")}
-                      </Button>
-                    ) : null}
-                  </div>
-                ))
+                  );
+                })
               ) : (
-                <p className="text-muted-foreground">—</p>
+                <EmptyState
+                  icon={Users}
+                  title={t("emptyApplicantsTitle")}
+                  body={t("emptyApplicantsBody")}
+                  action={
+                    <WhatsAppButton
+                      label={t("shareOnWhatsApp")}
+                      text={jobShareText({
+                        id: job.id,
+                        title: job.title,
+                        wage_amount: Number(job.wage_amount),
+                        wageWord,
+                        place,
+                      })}
+                    />
+                  }
+                />
               )}
             </div>
           </div>
+
         ) : (
           <div className="rounded-3xl border border-border bg-card p-5 shadow-card">
             {myApp ? (
