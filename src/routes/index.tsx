@@ -198,7 +198,7 @@ function Landing() {
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary-deep via-primary-deep/85 to-primary-deep/40" />
 
-          <div className="mx-auto max-w-7xl px-4 pb-24 pt-14 text-primary-deep-foreground sm:pb-36 sm:pt-28 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 pb-32 pt-14 text-primary-deep-foreground sm:pb-36 sm:pt-28 lg:px-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary-deep-foreground/25 bg-primary-deep-foreground/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
               India&apos;s farm work marketplace
             </span>
@@ -275,12 +275,12 @@ function Landing() {
             {categories.map((c) => (
               <article
                 key={c.title}
-                className="group rounded-3xl border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:shadow-lift"
+                className="group rounded-3xl border border-border bg-card p-5 transition-all sm:p-7 hover:-translate-y-1 hover:shadow-lift"
               >
                 <span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <c.icon className="size-6" />
                 </span>
-                <h3 className="mt-6 text-lg font-bold text-card-foreground">{c.title}</h3>
+                <h3 className="mt-4 text-lg font-bold text-card-foreground sm:mt-6">{c.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
               </article>
             ))}
