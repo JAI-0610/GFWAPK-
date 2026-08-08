@@ -72,7 +72,7 @@ function AuthPage() {
           password,
           options: {
             emailRedirectTo: window.location.origin,
-            data: { full_name: name, intended_role: role ?? "worker" },
+            data: { full_name: name, intended_role: intent },
           },
         });
         if (error) throw error;
