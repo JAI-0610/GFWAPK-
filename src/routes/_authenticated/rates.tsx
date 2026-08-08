@@ -92,24 +92,31 @@ function RatesPage() {
           <h2 className="text-lg font-bold">Daily wage rates</h2>
         </div>
         <div className="mt-3 space-y-2">
-          {(rates ?? []).map((r) => (
-            <div
-              key={r.id}
-              className="flex items-center justify-between gap-3 rounded-2xl bg-secondary px-3 py-2.5"
-            >
-              <div className="min-w-0">
-                <p className="truncate font-bold text-secondary-foreground">{r.crop}</p>
-                <p className="truncate text-sm text-muted-foreground">
-                  {[r.district, r.state].filter(Boolean).join(", ")}
-                </p>
+          {rates?.length ? (
+            rates.map((r) => (
+              <div
+                key={r.id}
+                className="flex items-center justify-between gap-3 rounded-2xl bg-secondary px-3 py-2.5"
+              >
+                <div className="min-w-0">
+                  <p className="truncate font-bold text-secondary-foreground">{r.crop}</p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    {[r.district, r.state].filter(Boolean).join(", ")}
+                  </p>
+                </div>
+                <span className="inline-flex shrink-0 items-center font-extrabold text-primary">
+                  <IndianRupee className="size-4" />
+                  {Number(r.wage_low)}–{Number(r.wage_high)}
+                </span>
               </div>
-              <span className="inline-flex shrink-0 items-center font-extrabold text-primary">
-                <IndianRupee className="size-4" />
-                {Number(r.wage_low)}–{Number(r.wage_high)}
-              </span>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="rounded-2xl border border-dashed border-border p-6 text-center text-muted-foreground">
+              No wage rates published for your area yet.
+            </p>
+          )}
         </div>
+
       </section>
 
       <section className="mt-4 rounded-3xl border border-border bg-card p-4 shadow-card">
