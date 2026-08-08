@@ -182,10 +182,13 @@ function AuthPage() {
                 {isSignup ? "Create your free account" : "Welcome back"}
               </h1>
               <p className="mt-2 text-base text-muted-foreground">
-                {isSignup
-                  ? "Takes under a minute. No fees to join, ever."
-                  : "Sign in to manage your jobs, crew and payments."}
+                {!isSignup
+                  ? "Sign in to manage your jobs, crew and payments."
+                  : intent === "landlord"
+                    ? "Hire verified farm workers for your land. Free to join, no posting fees."
+                    : "Find paid farm work near your village. Free to join, you keep every rupee."}
               </p>
+
             </div>
 
             <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-7">
