@@ -406,6 +406,182 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_deliveries: {
+        Row: {
+          attempts: number
+          channel: string
+          created_at: string
+          destination: string | null
+          error: string | null
+          id: string
+          notification_id: string | null
+          provider: string | null
+          provider_message_id: string | null
+          sent_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          channel: string
+          created_at?: string
+          destination?: string | null
+          error?: string | null
+          id?: string
+          notification_id?: string | null
+          provider?: string | null
+          provider_message_id?: string | null
+          sent_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          channel?: string
+          created_at?: string
+          destination?: string | null
+          error?: string | null
+          id?: string
+          notification_id?: string | null
+          provider?: string | null
+          provider_message_id?: string | null
+          sent_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_deliveries_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_prefs: {
+        Row: {
+          application_updates: boolean
+          contract_milestones: boolean
+          created_at: string
+          email: boolean
+          in_app: boolean
+          job_alerts: boolean
+          payment_updates: boolean
+          quiet_hours_end: number | null
+          quiet_hours_start: number | null
+          sms: boolean
+          timezone: string
+          updated_at: string
+          user_id: string
+          whatsapp: boolean
+        }
+        Insert: {
+          application_updates?: boolean
+          contract_milestones?: boolean
+          created_at?: string
+          email?: boolean
+          in_app?: boolean
+          job_alerts?: boolean
+          payment_updates?: boolean
+          quiet_hours_end?: number | null
+          quiet_hours_start?: number | null
+          sms?: boolean
+          timezone?: string
+          updated_at?: string
+          user_id: string
+          whatsapp?: boolean
+        }
+        Update: {
+          application_updates?: boolean
+          contract_milestones?: boolean
+          created_at?: string
+          email?: boolean
+          in_app?: boolean
+          job_alerts?: boolean
+          payment_updates?: boolean
+          quiet_hours_end?: number | null
+          quiet_hours_start?: number | null
+          sms?: boolean
+          timezone?: string
+          updated_at?: string
+          user_id?: string
+          whatsapp?: boolean
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          data: Json
+          id: string
+          kind: Database["public"]["Enums"]["notification_kind"]
+          link: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          data?: Json
+          id?: string
+          kind?: Database["public"]["Enums"]["notification_kind"]
+          link?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          data?: Json
+          id?: string
+          kind?: Database["public"]["Enums"]["notification_kind"]
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      phone_verifications: {
+        Row: {
+          attempts: number
+          channel: string
+          code_hash: string
+          created_at: string
+          expires_at: string
+          id: string
+          phone: string
+          user_id: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          attempts?: number
+          channel?: string
+          code_hash: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          phone: string
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          attempts?: number
+          channel?: string
+          code_hash?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          phone?: string
+          user_id?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           bio: string | null
@@ -422,12 +598,14 @@ export type Database = {
           language: string
           onboarded: boolean
           phone: string | null
+          phone_verified: boolean
           photo_url: string | null
           rating: number
           skills: string[]
           state: string | null
           updated_at: string
           village: string | null
+          whatsapp_opt_in: boolean
           years_experience: number
         }
         Insert: {
@@ -445,12 +623,14 @@ export type Database = {
           language?: string
           onboarded?: boolean
           phone?: string | null
+          phone_verified?: boolean
           photo_url?: string | null
           rating?: number
           skills?: string[]
           state?: string | null
           updated_at?: string
           village?: string | null
+          whatsapp_opt_in?: boolean
           years_experience?: number
         }
         Update: {
@@ -468,12 +648,14 @@ export type Database = {
           language?: string
           onboarded?: boolean
           phone?: string | null
+          phone_verified?: boolean
           photo_url?: string | null
           rating?: number
           skills?: string[]
           state?: string | null
           updated_at?: string
           village?: string | null
+          whatsapp_opt_in?: boolean
           years_experience?: number
         }
         Relationships: []
@@ -657,6 +839,14 @@ export type Database = {
         | "disputed"
         | "cancelled"
       job_status: "draft" | "open" | "in_progress" | "completed" | "cancelled"
+      notification_kind:
+        | "job_alert"
+        | "application_update"
+        | "contract_milestone"
+        | "payment_update"
+        | "invite"
+        | "message"
+        | "system"
       wage_type: "per_day" | "per_acre" | "fixed"
     }
     CompositeTypes: {
@@ -801,6 +991,15 @@ export const Constants = {
         "cancelled",
       ],
       job_status: ["draft", "open", "in_progress", "completed", "cancelled"],
+      notification_kind: [
+        "job_alert",
+        "application_update",
+        "contract_milestone",
+        "payment_update",
+        "invite",
+        "message",
+        "system",
+      ],
       wage_type: ["per_day", "per_acre", "fixed"],
     },
   },
