@@ -170,7 +170,7 @@ function AuthPage() {
           <div className="w-full max-w-md">
             <div className="mb-7">
               <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-widest text-secondary-foreground">
-                {role === "landlord" ? "Farm owner" : role === "worker" ? "Farm partner" : "Welcome"}
+                {!isSignup ? "Welcome back" : intent === "landlord" ? "Farm owner" : "Farm worker"}
               </span>
               <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-foreground">
                 {isSignup ? "Create your free account" : "Welcome back"}
