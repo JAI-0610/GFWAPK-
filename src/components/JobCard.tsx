@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Bus, Hammer, Home, IndianRupee, MapPin, Sun, Utensils } from "lucide-react";
 
 import { ListenButton } from "@/components/ListenButton";
+import { SaveJobButton } from "@/components/SaveJobButton";
+
 import { useI18n } from "@/lib/i18n";
 
 export type JobRow = {
