@@ -198,7 +198,7 @@ function Landing() {
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary-deep via-primary-deep/85 to-primary-deep/40" />
 
-          <div className="mx-auto max-w-7xl px-4 pb-28 pt-20 text-primary-deep-foreground sm:pb-36 sm:pt-28 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 pb-32 pt-14 text-primary-deep-foreground sm:pb-36 sm:pt-28 lg:px-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary-deep-foreground/25 bg-primary-deep-foreground/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em]">
               India&apos;s farm work marketplace
             </span>
@@ -244,42 +244,43 @@ function Landing() {
         </section>
 
         {/* STATS */}
-        <section className="relative z-10 mx-auto -mt-16 max-w-7xl px-4 lg:px-8">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="relative z-10 mx-auto -mt-12 max-w-7xl px-4 sm:-mt-16 lg:px-8">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
             {stats.map((s) => (
               <div
                 key={s.label}
-                className="rounded-3xl border border-border bg-card p-6 shadow-lift"
+                className="rounded-2xl border border-border bg-card p-4 shadow-lift sm:rounded-3xl sm:p-6"
               >
-                <span className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <s.icon className="size-5" />
+                <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary sm:size-11 sm:rounded-2xl">
+                  <s.icon className="size-4 sm:size-5" />
                 </span>
-                <p className="mt-5 font-display text-3xl font-extrabold text-card-foreground">
+                <p className="mt-3 font-display text-2xl font-extrabold leading-tight text-card-foreground sm:mt-5 sm:text-3xl">
                   {s.value}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+                <p className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm">{s.label}</p>
               </div>
             ))}
           </div>
         </section>
 
+
         {/* CATEGORIES */}
-        <section id="categories" className="mx-auto max-w-7xl px-4 py-24 lg:px-8">
+        <section id="categories" className="mx-auto max-w-7xl px-4 py-16 sm:py-24 lg:px-8">
           <SectionHeading
             eyebrow="Categories"
             title="Explore farming categories"
             subtitle="Find skilled agricultural experts for your farming needs."
           />
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid sm:mt-12 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {categories.map((c) => (
               <article
                 key={c.title}
-                className="group rounded-3xl border border-border bg-card p-7 transition-all hover:-translate-y-1 hover:shadow-lift"
+                className="group rounded-3xl border border-border bg-card p-5 transition-all sm:p-7 hover:-translate-y-1 hover:shadow-lift"
               >
                 <span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                   <c.icon className="size-6" />
                 </span>
-                <h3 className="mt-6 text-lg font-bold text-card-foreground">{c.title}</h3>
+                <h3 className="mt-4 text-lg font-bold text-card-foreground sm:mt-6">{c.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
               </article>
             ))}
@@ -287,14 +288,14 @@ function Landing() {
         </section>
 
         {/* HOW IT WORKS */}
-        <section id="how-it-works" className="bg-secondary/50 py-24">
+        <section id="how-it-works" className="bg-secondary/50 py-16 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 lg:px-8">
             <SectionHeading
               eyebrow="Simple process"
               title="How GO FARM WORK works"
               subtitle="Simple steps to connect farms with skilled agricultural workers."
             />
-            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid sm:mt-12 gap-5 md:grid-cols-2 lg:grid-cols-4">
               {steps.map((s, i) => (
                 <article
                   key={s.title}
@@ -315,7 +316,7 @@ function Landing() {
         </section>
 
         {/* TWO AUDIENCES */}
-        <section className="mx-auto grid max-w-7xl gap-5 px-4 py-24 lg:grid-cols-2 lg:px-8">
+        <section className="mx-auto grid max-w-7xl gap-5 px-4 py-16 sm:py-24 lg:grid-cols-2 lg:px-8">
           <article
             id="for-owners"
             className="relative isolate overflow-hidden rounded-[2rem] bg-primary-deep p-9 text-primary-deep-foreground"
@@ -401,7 +402,7 @@ function Landing() {
             title="Affordable plans for everyone"
             subtitle="Choose the plan that works best for your farming needs."
           />
-          <div className="mt-12 grid items-start gap-5 lg:grid-cols-3">
+          <div className="mt-8 grid sm:mt-12 items-start gap-5 lg:grid-cols-3">
             {plans.map((p) => (
               <article
                 key={p.name}
@@ -447,7 +448,7 @@ function Landing() {
         </section>
 
         {/* QUOTE */}
-        <section id="quote" className="bg-field py-24 text-primary-deep-foreground">
+        <section id="quote" className="bg-field py-16 sm:py-24 text-primary-deep-foreground">
           <div className="mx-auto max-w-3xl px-4 text-center">
             <Quote className="mx-auto size-8 text-warn" />
             <p className="mt-6 font-display text-2xl font-semibold leading-snug sm:text-3xl">
@@ -468,7 +469,7 @@ function Landing() {
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="mx-auto max-w-3xl px-4 py-24 lg:px-8">
+        <section id="faq" className="mx-auto max-w-3xl px-4 py-16 sm:py-24 lg:px-8">
           <SectionHeading eyebrow="FAQ" title="Frequently asked questions" />
           <Accordion type="single" collapsible className="mt-10">
             {faqs.map((f) => (
