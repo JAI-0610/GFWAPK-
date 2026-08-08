@@ -71,7 +71,7 @@ function Onboarding() {
           <span className="text-lg font-extrabold">{t("appName")}</span>
           <LanguagePicker compact />
         </div>
-        <h1 className="mx-auto mt-8 max-w-md text-3xl font-extrabold">{t("chooseRole")}</h1>
+        <h1 className="mx-auto mt-8 max-w-md text-3xl font-extrabold">{t("iAm")}</h1>
       </header>
 
       <div className="mx-auto -mt-5 max-w-md space-y-4 px-4 pb-16">
@@ -79,13 +79,13 @@ function Onboarding() {
           <RoleCard
             active={role === "worker"}
             icon={Sprout}
-            label={t("iAmWorker")}
+            label={t("worker")}
             onClick={() => setRole("worker")}
           />
           <RoleCard
             active={role === "landlord"}
             icon={Tractor}
-            label={t("iAmLandlord")}
+            label={t("landlord")}
             onClick={() => setRole("landlord")}
           />
         </div>
