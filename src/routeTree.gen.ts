@@ -24,6 +24,7 @@ import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedPostJobRouteImport } from './routes/_authenticated/post-job'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedRatesRouteImport } from './routes/_authenticated/rates'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated/wallet'
 import { Route as AuthenticatedWorkersRouteImport } from './routes/_authenticated/workers'
@@ -104,6 +105,11 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRatesRoute = AuthenticatedRatesRouteImport.update({
+  id: '/rates',
+  path: '/rates',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
   id: '/saved',
   path: '/saved',
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/rates': typeof AuthenticatedRatesRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/wallet': typeof AuthenticatedWalletRoute
   '/workers': typeof AuthenticatedWorkersRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/post-job': typeof AuthenticatedPostJobRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/rates': typeof AuthenticatedRatesRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/wallet': typeof AuthenticatedWalletRoute
   '/workers': typeof AuthenticatedWorkersRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/post-job': typeof AuthenticatedPostJobRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/rates': typeof AuthenticatedRatesRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/wallet': typeof AuthenticatedWalletRoute
   '/_authenticated/workers': typeof AuthenticatedWorkersRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/post-job'
     | '/profile'
+    | '/rates'
     | '/saved'
     | '/wallet'
     | '/workers'
@@ -233,6 +243,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/post-job'
     | '/profile'
+    | '/rates'
     | '/saved'
     | '/wallet'
     | '/workers'
@@ -255,6 +266,7 @@ export interface FileRouteTypes {
     | '/_authenticated/onboarding'
     | '/_authenticated/post-job'
     | '/_authenticated/profile'
+    | '/_authenticated/rates'
     | '/_authenticated/saved'
     | '/_authenticated/wallet'
     | '/_authenticated/workers'
@@ -380,6 +392,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/rates': {
+      id: '/_authenticated/rates'
+      path: '/rates'
+      fullPath: '/rates'
+      preLoaderRoute: typeof AuthenticatedRatesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/saved': {
       id: '/_authenticated/saved'
       path: '/saved'
@@ -426,6 +445,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedPostJobRoute: typeof AuthenticatedPostJobRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedRatesRoute: typeof AuthenticatedRatesRoute
   AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
   AuthenticatedWalletRoute: typeof AuthenticatedWalletRoute
   AuthenticatedWorkersRoute: typeof AuthenticatedWorkersRoute
@@ -441,6 +461,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedPostJobRoute: AuthenticatedPostJobRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedRatesRoute: AuthenticatedRatesRoute,
   AuthenticatedSavedRoute: AuthenticatedSavedRoute,
   AuthenticatedWalletRoute: AuthenticatedWalletRoute,
   AuthenticatedWorkersRoute: AuthenticatedWorkersRoute,
