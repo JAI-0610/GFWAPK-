@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Briefcase, Grid3x3, Home, MessageCircle, Sparkles, User } from "lucide-react";
+import { Bell, Briefcase, Grid3x3, Home, MessageCircle, Sparkles, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { LanguagePicker } from "@/components/LanguagePicker";
@@ -40,6 +40,13 @@ export function AppShell({
           <div className="flex shrink-0 items-center gap-2">
             {action}
             <LanguagePicker compact />
+            <Link
+              to="/notifications"
+              aria-label="Notifications"
+              className="grid size-11 place-items-center rounded-full border border-border/40 bg-card/15"
+            >
+              <Bell className="size-5" />
+            </Link>
             <Link
               to="/profile"
               aria-label="Profile"

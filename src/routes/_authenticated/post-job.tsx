@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { notifyJobAlertMatches } from "@/lib/notifications.functions";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/post-job")({
@@ -68,6 +69,11 @@ function PostJob() {
         .select("id")
         .single();
       if (error) throw error;
+      try {
+        await notifyJobAlertMatches({ data: { jobId: data.id } });
+      } catch (notifyError) {
+        console.error("job alert fan-out failed", notifyError);
+      }
       toast.success(t("postWork"));
       navigate({ to: "/jobs/$id", params: { id: data.id } });
     } catch (error) {
