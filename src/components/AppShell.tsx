@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Briefcase, Home, MessageCircle, Sparkles, Wallet } from "lucide-react";
+import { Briefcase, Home, MessageCircle, Sparkles, User, Wallet } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { LanguagePicker } from "@/components/LanguagePicker";
