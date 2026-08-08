@@ -5,10 +5,10 @@ import { useState } from "react";
 import { LanguagePicker } from "@/components/LanguagePicker";
 
 const navLinks = [
-  { label: "Find Talent", href: "#for-owners" },
-  { label: "Find Work", href: "#for-workers" },
-  { label: "Why GO FARM WORK", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Find Work", to: "/browse" as const },
+  { label: "How it works", to: "/how-it-works" as const },
+  { label: "Pricing", to: "/pricing" as const },
+  { label: "About", to: "/about" as const },
 ];
 
 export function SiteHeader() {
@@ -28,13 +28,14 @@ export function SiteHeader() {
 
         <nav className="hidden min-w-0 items-center gap-6 pl-4 lg:flex">
           {navLinks.map((l) => (
-            <a
+            <Link
               key={l.label}
-              href={l.href}
+              to={l.to}
+              activeProps={{ className: "text-foreground" }}
               className="whitespace-nowrap text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
           <label className="ml-2 flex h-10 min-w-0 flex-1 items-center gap-2 rounded-full border border-border bg-background px-4 text-sm text-muted-foreground focus-within:border-primary">
             <Search className="size-4 shrink-0" />
@@ -85,14 +86,14 @@ export function SiteHeader() {
         <div className="border-t border-border bg-card px-4 py-4 lg:hidden">
           <div className="grid gap-1">
             {navLinks.map((l) => (
-              <a
+              <Link
                 key={l.label}
-                href={l.href}
+                to={l.to}
                 onClick={() => setOpen(false)}
                 className="rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-secondary"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
             <Link
               to="/auth"
