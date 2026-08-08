@@ -77,7 +77,11 @@ export function JobCard({ job }: { job: JobRow }) {
         ) : (
           <span />
         )}
-        <ListenButton text={spoken} />
+        <div className="flex items-center gap-2">
+          <ListenButton text={spoken} />
+          <SaveJobButton jobId={job.id} />
+        </div>
+
       </div>
     </Link>
   );
