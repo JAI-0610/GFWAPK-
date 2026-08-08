@@ -54,7 +54,7 @@ function AuthPage() {
   const { t } = useI18n();
   const navigate = useNavigate();
   const { role } = Route.useSearch();
-  const [intent, setIntent] = useState<"worker" | "landlord">(role ?? "worker");
+  const [intent, setIntent] = useState<Intent>(role ?? "worker");
   const [mode, setMode] = useState<"signin" | "signup">("signup");
 
   const [email, setEmail] = useState("");
