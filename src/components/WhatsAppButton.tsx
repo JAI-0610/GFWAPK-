@@ -15,7 +15,7 @@ export function WhatsAppButton({
   className,
 }: {
   text: string;
-  phone?: string | null;
+  phone?: string | null | undefined;
   label: string;
   variant?: "solid" | "outline";
   className?: string;

@@ -25,7 +25,7 @@ export function jobShareText(job: {
   title: string;
   wage_amount: number;
   wageWord: string;
-  place?: string | null;
+  place?: string | null | undefined;
 }) {
   const place = job.place ? `\n📍 ${job.place}` : "";
   return `*${job.title}*\n💰 ₹${job.wage_amount} ${job.wageWord}${place}\n\nApply on GO FARM WORK:\n${jobUrl(job.id)}`;
@@ -33,10 +33,10 @@ export function jobShareText(job: {
 
 export function hireConfirmText(args: {
   jobTitle: string;
-  workerName?: string | null;
+  workerName?: string | null | undefined;
   wage: number;
   wageWord: string;
-  startDate?: string | null;
+  startDate?: string | null | undefined;
 }) {
   const who = args.workerName ? ` ${args.workerName}` : "";
   const start = args.startDate ? `\n📅 Start: ${args.startDate}` : "";
@@ -45,8 +45,8 @@ export function hireConfirmText(args: {
 
 export function paymentConfirmText(args: {
   amount: number;
-  jobTitle?: string | null;
-  note?: string | null;
+  jobTitle?: string | null | undefined;
+  note?: string | null | undefined;
 }) {
   const job = args.jobTitle ? `\nWork: ${args.jobTitle}` : "";
   const note = args.note ? `\n${args.note}` : "";
