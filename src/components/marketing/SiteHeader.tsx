@@ -57,10 +57,10 @@ export function SiteHeader() {
           </Link>
           <Link
             to="/auth"
-            search={{ role: "worker" }}
+            search={{ role: "worker", mode: "signin" }}
             className="hidden rounded-full px-3 py-2 text-sm font-semibold text-foreground hover:text-primary sm:inline-flex"
           >
-            Log In
+            Signin
           </Link>
           <Link
             to="/auth"

@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 
 
 type Intent = "worker" | "landlord" | "both";
-type Search = { role?: Intent | undefined };
+type Search = { role?: Intent | undefined; mode?: "signin" | "signup" | undefined };
 
 const parseIntent = (value: unknown): Intent | undefined =>
   value === "landlord" || value === "worker" || value === "both" ? value : undefined;
@@ -36,6 +36,7 @@ const parseIntent = (value: unknown): Intent | undefined =>
 export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>): Search => ({
     role: parseIntent(search["role"]),
+    mode: search["mode"] === "signin" || search["mode"] === "signup" ? search["mode"] : undefined,
   }),
 
 
@@ -55,9 +56,9 @@ export const Route = createFileRoute("/auth")({
 function AuthPage() {
   const { t } = useI18n();
   const navigate = useNavigate();
-  const { role } = Route.useSearch();
+  const { role, mode: initialMode } = Route.useSearch();
   const [intent, setIntent] = useState<Intent>(role ?? "worker");
-  const [mode, setMode] = useState<"signin" | "signup">("signup");
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode ?? "signup");
   const [authMethod, setAuthMethod] = useState<"email" | "phone">("email");
 
   const [email, setEmail] = useState("");
