@@ -2,6 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { MapPin, Navigation } from "lucide-react";
+
 import { AppShell } from "@/components/AppShell";
 import { MicButton } from "@/components/MicButton";
 import { Button } from "@/components/ui/button";
@@ -38,6 +40,28 @@ function PostJob() {
   const [tools, setTools] = useState(false);
   const [women, setWomen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [locationText, setLocationText] = useState("");
+  const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [gpsLoading, setGpsLoading] = useState(false);
+
+  const handleGPS = () => {
+    if (!navigator.geolocation) {
+      toast.error("Geolocation is not supported by your browser");
+      return;
+    }
+    setGpsLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        toast.success("Location captured!");
+        setGpsLoading(false);
+      },
+      (err) => {
+        toast.error("Failed to get location: " + err.message);
+        setGpsLoading(false);
+      }
+    );
+  };
 
   const submit = async () => {
     if (!title.trim() || !Number(wage)) {
@@ -62,8 +86,10 @@ function PostJob() {
           transport_provided: transport,
           tools_provided: tools,
           women_friendly: women,
-          village: profile?.village ?? null,
+          village: locationText.trim() || profile?.village || null,
           district: profile?.district ?? null,
+          latitude: coords?.lat || null,
+          longitude: coords?.lng || null,
           status: "open",
         })
         .select("id")
@@ -85,9 +111,23 @@ function PostJob() {
 
   return (
     <AppShell title={t("postWork")} subtitle={t("tagline")}>
-      <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-card">
+      <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-sm">
         <VoiceField label={t("findWork")} value={title} onChange={setTitle} />
         <VoiceField label="Crop" value={crop} onChange={setCrop} />
+        
+        <VoiceField label="Worksite Location (Village / Area)" value={locationText} onChange={setLocationText} />
+        <div className="flex items-center gap-3">
+          <Button 
+            type="button" 
+            variant={coords ? "default" : "secondary"}
+            onClick={handleGPS} 
+            disabled={gpsLoading} 
+            className="w-full h-12 font-semibold"
+          >
+            {coords ? <MapPin className="mr-2 size-5" /> : <Navigation className="mr-2 size-5" />}
+            {gpsLoading ? "Locating..." : coords ? "Location Captured" : "Use Current GPS Location"}
+          </Button>
+        </div>
 
         <div className="space-y-1.5">
           <Label className="text-base">{t("askAnything")}</Label>
@@ -129,10 +169,10 @@ function PostJob() {
               type="button"
               onClick={() => setWageType(w)}
               className={cn(
-                "rounded-2xl border-2 px-2 py-3 text-sm font-bold",
+                "rounded-lg border-2 px-2 py-2 text-sm font-bold transition-colors",
                 wageType === w
                   ? "border-primary bg-primary/10 text-primary"
-                  : "border-border text-muted-foreground",
+                  : "border-border text-muted-foreground hover:bg-secondary/50",
               )}
             >
               {t(w === "per_day" ? "perDay" : w === "per_acre" ? "perAcre" : "fixed")}
@@ -150,7 +190,7 @@ function PostJob() {
           />
         </div>
 
-        <div className="space-y-2 rounded-2xl bg-secondary p-4">
+        <div className="space-y-2 rounded-lg bg-secondary p-4">
           <Perk label={t("foodProvided")} checked={food} onChange={setFood} />
           <Perk label={t("stayProvided")} checked={stay} onChange={setStay} />
           <Perk label={t("transportProvided")} checked={transport} onChange={setTransport} />

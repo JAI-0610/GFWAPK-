@@ -37,9 +37,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground">
-              <Sprout className="size-5" />
-            </span>
+            <img src="/logo.png" alt="GO FARM WORK logo" className="size-9 rounded-full object-cover shadow-sm" />
             <span className="font-display text-base font-extrabold">GO FARM WORK</span>
           </div>
           <p className="mt-4 max-w-xs text-sm opacity-75">

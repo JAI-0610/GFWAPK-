@@ -34,6 +34,9 @@ type AuthValue = {
   loading: boolean;
   profile: Profile | null;
   role: Role | null;
+  roles: Role[];
+  isWorker: boolean;
+  isOwner: boolean;
   refresh: () => void;
 };
 
@@ -63,12 +66,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["me", userId],
     enabled: Boolean(userId),
     queryFn: async () => {
-      const [{ data: profile }, { data: roles }] = await Promise.all([
+      const [{ data: profile }, { data: rolesData }] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", userId!).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", userId!),
       ]);
-      const role = (roles?.[0]?.role ?? null) as Role | null;
-      return { profile: (profile as Profile | null) ?? null, role };
+      const roles = (rolesData?.map((r) => r.role) ?? []) as Role[];
+      const role = roles[0] ?? null;
+      return { 
+        profile: (profile as Profile | null) ?? null, 
+        role,
+        roles,
+        isWorker: roles.includes("worker"),
+        isOwner: roles.includes("landlord"),
+      };
     },
   });
 
@@ -80,6 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loading,
         profile: data?.profile ?? null,
         role: data?.role ?? null,
+        roles: data?.roles ?? [],
+        isWorker: data?.isWorker ?? false,
+        isOwner: data?.isOwner ?? false,
         refresh: () => queryClient.invalidateQueries({ queryKey: ["me"] }),
       }}
     >

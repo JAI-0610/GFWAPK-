@@ -106,7 +106,7 @@ function MessagesPage() {
         <div ref={bottom} />
       </div>
 
-      <div className="sticky bottom-20 flex items-center gap-2 rounded-3xl border border-border bg-card p-2 shadow-lift">
+      <div className="sticky bottom-20 flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-sm focus-within:border-primary/50 focus-within:shadow-md transition-shadow mt-4">
         <label htmlFor="message-draft" className="sr-only">
           {t("chat")}
         </label>
@@ -116,10 +116,10 @@ function MessagesPage() {
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
           placeholder={t("chat")}
-          className="h-12 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
+          className="h-10 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
         />
         <MicButton onText={(text: string) => setDraft(text)} />
-        <Button onClick={send} aria-label={t("send")} className="h-12 min-w-16 font-bold">
+        <Button onClick={send} aria-label={t("send")} className="h-10 min-w-16 font-bold" size="sm">
           {t("send")}
         </Button>
       </div>

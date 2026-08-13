@@ -18,9 +18,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/70 bg-card/85 backdrop-blur-xl">
       <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-3 lg:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-2.5">
-          <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-primary-deep text-primary-deep-foreground">
-            <Sprout className="size-5" />
-          </span>
+          <img src="/logo.png" alt="GO FARM WORK" className="size-9 rounded-full object-cover shadow-sm" />
           <span className="truncate font-display text-[15px] font-extrabold tracking-tight text-foreground sm:text-base">
             GO FARM WORK
           </span>

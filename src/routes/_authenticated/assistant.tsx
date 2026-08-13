@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { AppShell } from "@/components/AppShell";
+import { EmptyState } from "@/components/EmptyState";
 import { ListenButton } from "@/components/ListenButton";
 import { MicButton } from "@/components/MicButton";
 import { Button } from "@/components/ui/button";
@@ -53,10 +54,11 @@ function Assistant() {
     <AppShell title={t("assistant")} subtitle={t("askAnything")}>
       <div className="space-y-3 pb-4">
         {turns.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-border p-8 text-center">
-            <Sparkles className="mx-auto size-8 text-primary" />
-            <p className="mt-3 text-muted-foreground">{t("askAnything")}</p>
-          </div>
+          <EmptyState
+            icon={Sparkles}
+            title={t("assistant")}
+            body="I am your Farmhand AI. Ask me anything about work, wages, or farming practices, and I'll do my best to help."
+          />
         ) : null}
 
         {turns.map((turn, i) => (
@@ -81,7 +83,7 @@ function Assistant() {
         {mutation.isPending ? <p className="text-sm text-muted-foreground">…</p> : null}
       </div>
 
-      <div className="sticky bottom-20 flex items-center gap-2 rounded-3xl border border-border bg-card p-2 shadow-lift">
+      <div className="sticky bottom-20 flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-sm">
         <Input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}

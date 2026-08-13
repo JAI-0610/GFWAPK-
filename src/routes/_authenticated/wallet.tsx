@@ -62,11 +62,11 @@ function WalletPage() {
   return (
     <AppShell title={t("wallet")} subtitle={t("earnings")}>
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-3xl bg-primary p-5 text-primary-foreground shadow-lift">
+        <div className="rounded-xl bg-primary p-5 text-primary-foreground shadow-sm">
           <p className="text-sm font-semibold opacity-85">{t("balance")}</p>
           <p className="mt-1 text-3xl font-extrabold">₹{balance}</p>
         </div>
-        <div className="rounded-3xl border border-border bg-card p-5 shadow-card">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
           <p className="flex items-center gap-1.5 text-sm font-semibold text-muted-foreground">
             <Lock className="size-4" /> {t("inEscrow")}
           </p>
@@ -74,20 +74,20 @@ function WalletPage() {
         </div>
       </div>
 
-      <div className="mt-5 space-y-2">
+      <div className="mt-6 space-y-3">
         {txns?.length ? (
           txns.map((tx) => {
             const credit = tx.direction !== "debit";
             return (
               <div
                 key={tx.id}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4"
+                className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 shadow-sm"
               >
                 <span
                   className={
                     credit
-                      ? "grid size-11 place-items-center rounded-full bg-money/15 text-money"
-                      : "grid size-11 place-items-center rounded-full bg-destructive/12 text-destructive"
+                      ? "grid size-10 place-items-center rounded-lg bg-money/15 text-money"
+                      : "grid size-10 place-items-center rounded-lg bg-destructive/12 text-destructive"
                   }
                 >
                   {credit ? (
@@ -100,18 +100,19 @@ function WalletPage() {
                   <p className="truncate font-semibold text-card-foreground">
                     {tx.note || tx.kind}
                   </p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {new Date(tx.created_at).toLocaleDateString()}
                   </p>
                 </div>
-                <span className="font-extrabold text-card-foreground">
+                <span className="font-bold text-card-foreground">
                   {credit ? "+" : "−"}₹{Number(tx.amount)}
                 </span>
                 {!credit ? (
                   <WhatsAppButton
                     variant="outline"
                     label={t("confirm")}
-                    className="px-3"
+                    size="sm"
+                    className="px-3 h-8 text-xs font-semibold"
                     text={paymentConfirmText({
                       amount: Number(tx.amount),
                       note: tx.note,

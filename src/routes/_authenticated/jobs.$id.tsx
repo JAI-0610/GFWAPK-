@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { ArrowLeft, IndianRupee, MapPin, Users } from "lucide-react";
+import { ArrowLeft, IndianRupee, MapPin, Trash2, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -29,6 +29,8 @@ type Job = {
   wage_type: "per_day" | "per_acre" | "fixed";
   village: string | null;
   district: string | null;
+  latitude: number | null;
+  longitude: number | null;
   start_date: string | null;
   escrow_funded: boolean;
   status: string;
@@ -110,6 +112,18 @@ function JobDetail() {
 
   const myApp = apps?.find((a) => a.worker_id === user?.id);
 
+  const deleteJob = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.from("jobs").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Job deleted successfully");
+      qc.invalidateQueries({ queryKey: ["dash-jobs"] });
+      navigate({ to: "/dashboard" });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   const apply = useMutation({
     mutationFn: async () => {
@@ -181,25 +195,25 @@ function JobDetail() {
   const place = [job.village, job.district].filter(Boolean).join(", ");
 
   return (
-    <div className="min-h-screen bg-background pb-24">
-      <header className="bg-field px-4 pb-8 pt-5 text-primary-deep-foreground">
-        <div className="mx-auto flex max-w-2xl items-center gap-3">
+    <div className="min-h-screen bg-background pb-20">
+      <header className="bg-primary px-4 pb-6 pt-5 text-primary-foreground">
+        <div className="mx-auto flex max-w-2xl items-center gap-4">
           <button
-            onClick={() => navigate({ to: "/jobs" })}
-            className="grid size-11 place-items-center rounded-full bg-card/15"
+            onClick={() => navigate({ to: "/dashboard" })}
+            className="grid size-10 shrink-0 place-items-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
             aria-label={t("back")}
           >
-            <ArrowLeft className="size-6" aria-hidden="true" />
+            <ArrowLeft className="size-5" aria-hidden="true" />
           </button>
-          <h1 className="min-w-0 flex-1 truncate text-2xl font-extrabold">{job.title}</h1>
+          <h1 className="min-w-0 flex-1 truncate text-2xl font-bold tracking-tight">{job.title}</h1>
           <ListenButton
             text={`${job.title}. ₹${job.wage_amount} ${wageWord}. ${place}. ${job.description ?? ""}`}
-            className="bg-card/15 text-current"
+            className="shrink-0 bg-black/10 hover:bg-black/20 text-current transition-colors"
           />
           <WhatsAppButton
-            variant="outline"
-            label={t("share")}
-            className="border-transparent bg-card/15 text-current"
+            variant="ghost"
+            label=""
+            className="shrink-0 border-transparent bg-black/10 hover:bg-black/20 text-current transition-colors"
             text={jobShareText({
               id: job.id,
               title: job.title,
@@ -208,50 +222,74 @@ function JobDetail() {
               place,
             })}
           />
+          {isOwner && (
+            <button
+              onClick={() => {
+                if (window.confirm("Are you sure you want to delete this job?")) {
+                  deleteJob.mutate();
+                }
+              }}
+              disabled={deleteJob.isPending}
+              className="grid size-10 shrink-0 place-items-center rounded-full bg-black/10 text-red-100 transition-colors hover:bg-destructive hover:text-white disabled:opacity-50"
+              aria-label="Delete job"
+            >
+              <Trash2 className="size-5" />
+            </button>
+          )}
         </div>
 
       </header>
 
-      <div className="mx-auto -mt-4 max-w-2xl space-y-3 px-4">
-        <div className="rounded-3xl border border-border bg-card p-5 shadow-card">
-          <div className="flex items-center gap-2 text-3xl font-extrabold text-money">
-            <IndianRupee className="size-7" />
+      <div className="mx-auto max-w-2xl space-y-4 px-4 py-6">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <div className="flex items-center gap-2 text-2xl font-bold text-money">
+            <IndianRupee className="size-6" />
             {Number(job.wage_amount)}
-            <span className="text-base font-semibold text-muted-foreground">{wageWord}</span>
+            <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{wageWord}</span>
           </div>
-          <div className="mt-3 flex flex-wrap gap-2 text-sm font-semibold text-secondary-foreground">
+          <div className="mt-4 flex flex-wrap gap-2 text-xs font-medium text-secondary-foreground">
             {place ? (
-              <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1.5">
-                <MapPin className="size-4" /> {place}
+              <span className="inline-flex items-center gap-1 rounded-md bg-secondary/60 px-2 py-1">
+                <MapPin className="size-3.5" /> {place}
               </span>
             ) : null}
-            <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-3 py-1.5">
-              <Users className="size-4" /> {job.crew_size} {t("workers")}
+            {job.latitude && job.longitude ? (
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${job.latitude},${job.longitude}`}
+                target="_blank" 
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 rounded-md bg-primary/10 text-primary px-2 py-1 hover:bg-primary/20 transition-colors"
+              >
+                <MapPin className="size-3.5" /> View on Map
+              </a>
+            ) : null}
+            <span className="inline-flex items-center gap-1 rounded-md bg-secondary/60 px-2 py-1">
+              <Users className="size-3.5" /> {job.crew_size} {t("workers")}
             </span>
             {job.crop ? (
-              <span className="rounded-full bg-secondary px-3 py-1.5">{job.crop}</span>
+              <span className="rounded-md bg-secondary/60 px-2 py-1">{job.crop}</span>
             ) : null}
           </div>
           {job.description ? (
-            <p className="mt-4 text-base leading-relaxed text-card-foreground">{job.description}</p>
+            <p className="mt-5 border-t border-border/60 pt-4 text-sm leading-relaxed text-card-foreground">{job.description}</p>
           ) : null}
         </div>
 
         {isOwner ? (
-          <div className="rounded-3xl border border-border bg-card p-5 shadow-card">
-            <h2 className="text-lg font-bold text-card-foreground">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+            <h2 className="text-base font-semibold text-card-foreground">
               {t("applicants")} ({apps?.length ?? 0})
             </h2>
-            <div className="mt-3 space-y-3">
+            <div className="mt-4 space-y-3">
               {apps?.length ? (
                 apps.map((a) => {
                   const worker = workers?.find((w) => w.id === a.worker_id);
                   const wage = Number(a.counter_wage ?? job.wage_amount);
                   return (
-                    <div key={a.id} className="rounded-2xl bg-secondary p-4">
-                      <div className="flex items-start justify-between gap-3">
+                    <div key={a.id} className="rounded-lg border border-border/50 bg-secondary/30 p-4">
+                      <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
-                          <p className="text-sm font-bold text-secondary-foreground">
+                          <p className="text-sm font-semibold text-secondary-foreground">
                             {worker?.full_name || t("worker")}
                           </p>
                           <p className="mt-1 text-sm text-secondary-foreground">{a.message || "—"}</p>
@@ -261,9 +299,9 @@ function JobDetail() {
                         </div>
                         <StatusBadge status={a.status} />
                       </div>
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      <div className="mt-4 flex flex-wrap gap-2">
                         {a.status !== "hired" ? (
-                          <Button onClick={() => hire.mutate(a)} className="h-12 font-bold">
+                          <Button onClick={() => hire.mutate(a)} className="h-9 font-semibold" size="sm">
                             {t("hire")}
                           </Button>
                         ) : (
@@ -281,9 +319,11 @@ function JobDetail() {
                         )}
                         <WhatsAppButton
                           variant="outline"
+                          size="sm"
                           label={t("chatOnWhatsApp")}
                           phone={worker?.phone}
                           text={`${t("appName")}: ${job.title}`}
+                          className="h-9"
                         />
                       </div>
                     </div>
@@ -312,9 +352,9 @@ function JobDetail() {
           </div>
 
         ) : (
-          <div className="rounded-3xl border border-border bg-card p-5 shadow-card">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
             {myApp ? (
-              <p className="text-center text-lg font-bold text-primary">{t("applied")}</p>
+              <p className="text-center text-base font-semibold text-primary">{t("applied")}</p>
             ) : (
               <>
                 <div className="flex items-start gap-2">
@@ -322,14 +362,14 @@ function JobDetail() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     placeholder={t("askAnything")}
-                    className="min-h-24 text-base"
+                    className="min-h-[80px] text-sm resize-none"
                   />
-                  <MicButton onText={(text: string) => setMessage(text)} />
+                  <MicButton onText={(text: string) => setMessage(text)} size="sm" />
                 </div>
                 <Button
                   onClick={() => apply.mutate()}
                   disabled={apply.isPending}
-                  className="mt-3 h-14 w-full text-lg font-bold"
+                  className="mt-4 h-10 w-full text-sm font-bold"
                 >
                   {t("apply")}
                 </Button>

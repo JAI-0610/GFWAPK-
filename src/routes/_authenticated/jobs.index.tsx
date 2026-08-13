@@ -77,24 +77,34 @@ function JobsList() {
 
   return (
     <AppShell title={t("findWork")} subtitle={t("jobsNearYou")}>
-      <div className="flex items-center gap-2 rounded-3xl border border-border bg-card p-3 shadow-card">
+      <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:border-primary/50">
         <label htmlFor="job-search" className="sr-only">
           {t("jobsNearYou")}
         </label>
-        <Search className="ml-1 size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <Search className="ml-2 size-5 shrink-0 text-muted-foreground" aria-hidden="true" />
         <Input
           id="job-search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={t("jobsNearYou")}
-          className="h-12 border-0 bg-transparent text-lg shadow-none placeholder:text-muted-foreground focus-visible:ring-0"
+          className="h-10 border-0 bg-transparent text-base shadow-none placeholder:text-muted-foreground focus-visible:ring-0"
         />
         <MicButton onText={(text: string) => setQ(text)} size="sm" />
       </div>
 
       {filtered.length ? (
         <VoiceJobFlow jobs={filtered} onApply={(job) => applyToJob.mutateAsync(job)} />
-      ) : null}
+      ) : (
+        <div className="mt-8">
+          <EmptyState
+            icon={Sprout}
+            title={t("noJobs")}
+            body="New farm work near your village will show up here. Set a job alert so we tell you first."
+            actionLabel="Create a job alert"
+            actionTo="/notifications"
+          />
+        </div>
+      )}
 
       <div className="mt-4 space-y-3">
         {isLoading ? (
@@ -103,15 +113,7 @@ function JobsList() {
           </p>
         ) : filtered.length ? (
           filtered.map((job) => <JobCard key={job.id} job={job} />)
-        ) : (
-          <EmptyState
-            icon={Sprout}
-            title={t("emptyJobsTitle")}
-            body={t("emptyJobsBody")}
-            actionLabel={t("emptyJobsCta")}
-            actionTo="/alerts"
-          />
-        )}
+        ) : null}
       </div>
     </AppShell>
   );

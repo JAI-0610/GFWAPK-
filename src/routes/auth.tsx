@@ -7,6 +7,7 @@ import {
 
   Lock,
   Mail,
+  Phone,
   ShieldCheck,
   Sprout,
   Tractor,
@@ -21,7 +22,6 @@ import { LanguagePicker } from "@/components/LanguagePicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { lovable } from "@/integrations/lovable/index";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -58,9 +58,13 @@ function AuthPage() {
   const { role } = Route.useSearch();
   const [intent, setIntent] = useState<Intent>(role ?? "worker");
   const [mode, setMode] = useState<"signin" | "signup">("signup");
+  const [authMethod, setAuthMethod] = useState<"email" | "phone">("email");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -75,7 +79,22 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     try {
-      if (mode === "signup") {
+      if (authMethod === "phone") {
+        if (!otpSent) {
+          const { error } = await supabase.auth.signInWithOtp({ phone });
+          if (error) throw error;
+          setOtpSent(true);
+          toast.success("OTP sent to your phone");
+        } else {
+          const { error, data } = await supabase.auth.verifyOtp({ phone, token: otp, type: "sms" });
+          if (error) throw error;
+          if (isSignup && data.session) {
+            navigate({ to: "/onboarding", search: { role: intent } });
+          } else {
+            navigate({ to: "/dashboard" });
+          }
+        }
+      } else if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -107,16 +126,19 @@ function AuthPage() {
     if (isSignup && typeof window !== "undefined") {
       window.localStorage.setItem("gfw_intent", intent);
     }
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: window.location.origin,
+      },
     });
 
-    if (result.error) {
+    if (error) {
       toast.error("Google sign-in failed. Please try again.");
       return;
     }
-    if (result.redirected) return;
-    navigate({ to: "/dashboard" });
+    // With Supabase OAuth, the user is redirected away.
+    // So we don't need to navigate manually if there's no error.
   };
 
   const isSignup = mode === "signup";
@@ -133,9 +155,7 @@ function AuthPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-primary-deep via-primary-deep/85 to-accent/40" />
         <div className="relative flex h-full flex-col justify-between p-12 text-primary-deep-foreground">
           <Link to="/" className="inline-flex items-center gap-3">
-            <span className="grid size-11 place-items-center rounded-2xl bg-primary text-primary-foreground">
-              <Sprout className="size-6" />
-            </span>
+            <img src="/logo.png" alt="GO FARM WORK logo" className="size-11 rounded-full object-cover shadow-sm" />
             <span className="font-display text-xl font-extrabold tracking-tight">{t("appName")}</span>
           </Link>
 
@@ -167,18 +187,20 @@ function AuthPage() {
       </aside>
 
       {/* Right: form panel */}
-      <main className="relative flex min-h-screen flex-col">
-        <div className="flex items-center justify-between px-5 pt-5 lg:px-12">
-          <Link to="/" className="inline-flex items-center gap-2 lg:invisible">
-            <span className="grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground">
-              <Sprout className="size-5" />
-            </span>
-            <span className="font-display text-base font-extrabold">{t("appName")}</span>
-          </Link>
-          <div className="text-foreground">
-            <LanguagePicker compact />
+      <main className="relative flex min-h-screen flex-col overflow-hidden bg-background/50">
+        <div className="absolute top-[-20%] right-[-10%] size-[60%] rounded-full bg-primary/20 blur-[120px] pointer-events-none z-0" />
+        <div className="absolute bottom-[-20%] left-[-10%] size-[60%] rounded-full bg-money/10 blur-[120px] pointer-events-none z-0" />
+        
+        <div className="relative z-10 flex flex-1 flex-col">
+          <div className="flex items-center justify-between px-5 pt-5 lg:px-12">
+            <Link to="/" className="inline-flex items-center gap-2 lg:invisible">
+              <img src="/logo.png" alt="GO FARM WORK logo" className="size-9 rounded-full object-cover shadow-sm" />
+              <span className="font-display text-base font-extrabold">{t("appName")}</span>
+            </Link>
+            <div className="text-foreground">
+              <LanguagePicker compact />
+            </div>
           </div>
-        </div>
 
         <div className="flex flex-1 items-center justify-center px-4 py-10 lg:px-12">
           <div className="w-full max-w-md">
@@ -207,7 +229,9 @@ function AuthPage() {
 
             </div>
 
-            <div className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-7">
+            <div className="relative overflow-hidden rounded-3xl border border-white/30 bg-white/50 p-6 shadow-[0_8px_40px_rgb(0,0,0,0.08)] backdrop-blur-2xl sm:p-7 dark:border-white/10 dark:bg-black/40">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 pointer-events-none dark:from-white/5 dark:to-transparent" />
+              <div className="relative z-10">
               {isSignup ? (
                 <fieldset className="mb-6">
                   <legend className="mb-3 text-sm font-bold text-foreground">
@@ -261,8 +285,37 @@ function AuthPage() {
                 <span className="h-px flex-1 bg-border" />
               </div>
 
+              <div className="mb-6 flex rounded-xl border border-border bg-secondary/50 p-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMethod("email");
+                    setOtpSent(false);
+                  }}
+                  className={cn(
+                    "flex-1 rounded-lg py-2 text-sm font-bold transition-all",
+                    authMethod === "email" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Email
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMethod("phone");
+                    setOtpSent(false);
+                  }}
+                  className={cn(
+                    "flex-1 rounded-lg py-2 text-sm font-bold transition-all",
+                    authMethod === "phone" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Phone Number
+                </button>
+              </div>
+
               <form onSubmit={submit} className="space-y-4">
-                {isSignup ? (
+                {isSignup && authMethod === "email" ? (
                   <Field
                     id="name"
                     icon={User}
@@ -273,52 +326,86 @@ function AuthPage() {
                   />
                 ) : null}
 
-                <Field
-                  id="email"
-                  icon={Mail}
-                  type="email"
-                  label={t("email")}
-                  value={email}
-                  onChange={setEmail}
-                  placeholder="you@example.com"
-                />
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="password" className="text-sm font-semibold">
-                    {t("password")}
-                  </Label>
-                  <div className="relative">
-                    <Lock className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength={6}
-                      placeholder="••••••••"
-                      className="h-14 rounded-2xl pl-12 pr-12 text-base"
+                {authMethod === "phone" ? (
+                  <>
+                    <Field
+                      id="phone"
+                      icon={Phone}
+                      type="tel"
+                      label="Phone Number"
+                      value={phone}
+                      onChange={setPhone}
+                      placeholder="+91 98765 43210"
+                      disabled={otpSent}
                     />
-                    <button
-                      type="button"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      onClick={() => setShowPassword((v) => !v)}
-                      className="absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-xl text-muted-foreground hover:bg-secondary"
-                    >
-                      {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
-                    </button>
-                  </div>
-                  {isSignup ? (
-                    <p className="pt-1 text-xs text-muted-foreground">At least 6 characters.</p>
-                  ) : null}
-                </div>
+                    {otpSent ? (
+                      <Field
+                        id="otp"
+                        icon={Lock}
+                        type="text"
+                        label="6-Digit OTP"
+                        value={otp}
+                        onChange={setOtp}
+                        placeholder="123456"
+                      />
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <Field
+                      id="email"
+                      icon={Mail}
+                      type="email"
+                      label={t("email")}
+                      value={email}
+                      onChange={setEmail}
+                      placeholder="you@example.com"
+                    />
+
+                    <div className="space-y-1.5">
+                      <Label htmlFor="password" className="text-sm font-semibold">
+                        {t("password")}
+                      </Label>
+                      <div className="relative">
+                        <Lock className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          minLength={6}
+                          placeholder="••••••••"
+                          className="h-14 rounded-2xl pl-12 pr-12 text-base"
+                        />
+                        <button
+                          type="button"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
+                          onClick={() => setShowPassword((v) => !v)}
+                          className="absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-xl text-muted-foreground hover:bg-secondary"
+                        >
+                          {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                        </button>
+                      </div>
+                      {isSignup ? (
+                        <p className="pt-1 text-xs text-muted-foreground">At least 6 characters.</p>
+                      ) : null}
+                    </div>
+                  </>
+                )}
 
                 <Button
                   type="submit"
                   disabled={busy}
                   className="h-14 w-full gap-2 rounded-2xl text-lg font-bold"
                 >
-                  {busy ? "Please wait…" : isSignup ? t("signUp") : t("signIn")}
+                  {busy
+                    ? "Please wait…"
+                    : authMethod === "phone" && !otpSent
+                      ? "Send Code"
+                      : isSignup
+                        ? t("signUp")
+                        : t("signIn")}
                   {!busy && <ArrowRight className="size-5" />}
                 </Button>
               </form>
@@ -333,6 +420,7 @@ function AuthPage() {
                   {isSignup ? t("signIn") : t("signUp")}
                 </button>
               </p>
+              </div>
             </div>
 
             <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
@@ -340,6 +428,7 @@ function AuthPage() {
               escrow until work is confirmed.
             </p>
           </div>
+        </div>
         </div>
       </main>
     </div>
@@ -409,6 +498,7 @@ function Field({
   onChange,
   type = "text",
   placeholder,
+  disabled,
 }: {
   id: string;
   icon: typeof Mail;
@@ -417,6 +507,7 @@ function Field({
   onChange: (v: string) => void;
   type?: string;
   placeholder?: string;
+  disabled?: boolean;
 }) {
   return (
     <div className="space-y-1.5">
@@ -431,6 +522,7 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required
+          disabled={disabled}
           placeholder={placeholder}
           className="h-14 rounded-2xl pl-12 text-base"
         />

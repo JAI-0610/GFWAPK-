@@ -104,27 +104,27 @@ function WorkerSearch() {
 
   return (
     <AppShell title="Find workers" subtitle="Search skilled farm partners and invite them">
-      <div className="flex items-center gap-2 rounded-3xl border border-border bg-card p-3 shadow-card">
-        <Search className="ml-1 size-5 shrink-0 text-muted-foreground" />
+      <div className="flex items-center gap-2 rounded-xl border border-border bg-card p-2 shadow-sm transition-shadow focus-within:shadow-md focus-within:border-primary/50">
+        <Search className="ml-2 size-5 shrink-0 text-muted-foreground" />
         <Input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Skill, crop, district…"
-          className="h-12 border-0 bg-transparent text-lg shadow-none focus-visible:ring-0"
+          className="h-10 border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
         />
         <MicButton onText={(text: string) => setQ(text)} />
       </div>
 
       {myJobs?.length ? (
-        <div className="mt-3 rounded-3xl border border-border bg-card p-3 shadow-card">
-          <label htmlFor="invite-job" className="text-sm font-semibold text-muted-foreground">
+        <div className="mt-4 rounded-xl border border-border bg-card p-4 shadow-sm">
+          <label htmlFor="invite-job" className="text-sm font-semibold text-foreground">
             Invite to job
           </label>
           <select
             id="invite-job"
             value={jobId || myJobs[0]!.id}
             onChange={(e) => setJobId(e.target.value)}
-            className="mt-1 h-12 w-full rounded-2xl border border-border bg-background px-3 text-base"
+            className="mt-2 h-10 w-full rounded-lg border border-border bg-background px-3 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
           >
             {myJobs.map((j) => (
               <option key={j.id} value={j.id}>
@@ -138,30 +138,30 @@ function WorkerSearch() {
       <div className="mt-4 space-y-3">
         {filtered.length ? (
           filtered.map((w) => (
-            <div key={w.id} className="rounded-3xl border border-border bg-card p-4 shadow-card">
-              <div className="flex items-start justify-between gap-3">
+              <div key={w.id} className="rounded-xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary/30 hover:shadow-card">
+              <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <h3 className="flex items-center gap-1.5 truncate text-lg font-bold text-card-foreground">
+                  <h3 className="flex items-center gap-1.5 truncate text-base font-semibold text-card-foreground">
                     {w.full_name || "Farm partner"}
                     {w.is_verified ? <BadgeCheck className="size-4 text-primary" /> : null}
                   </h3>
                   <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
-                    <MapPin className="size-4" />
+                    <MapPin className="size-3.5" />
                     {[w.village, w.district].filter(Boolean).join(", ") || "India"}
                   </p>
                 </div>
-                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-primary/12 px-3 py-1.5 text-sm font-bold text-primary">
-                  <Star className="size-4 fill-current" />
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-bold text-secondary-foreground">
+                  <Star className="size-3.5 fill-current text-primary" />
                   {Number(w.rating).toFixed(1)}
                 </span>
               </div>
 
               {w.skills?.length ? (
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {w.skills.slice(0, 6).map((s) => (
                     <span
                       key={s}
-                      className="rounded-full bg-secondary px-2.5 py-1 text-sm font-medium text-secondary-foreground"
+                      className="rounded-md bg-secondary/60 px-2 py-1 text-xs font-medium text-secondary-foreground"
                     >
                       {s}
                     </span>
@@ -169,26 +169,27 @@ function WorkerSearch() {
                 </div>
               ) : null}
 
-              <div className="mt-3 flex items-center justify-between gap-2">
-                <p className="text-sm text-muted-foreground">
+              <div className="mt-5 flex items-center justify-between border-t border-border/60 pt-4">
+                <p className="text-sm font-medium text-muted-foreground">
                   {w.years_experience} yrs · {w.jobs_completed} jobs done
                   {w.day_rate ? ` · ₹${Number(w.day_rate)}/day` : ""}
                 </p>
                 <Button
                   size="sm"
-                  className="h-10 font-bold"
+                  variant="outline"
+                  className="h-8 font-semibold text-xs"
                   disabled={invite.isPending || w.id === user?.id}
                   onClick={() => invite.mutate(w.id)}
                 >
-                  <Send className="size-4" /> Invite
+                  <Send className="size-3.5 mr-1" /> Invite
                 </Button>
               </div>
             </div>
           ))
         ) : (
-          <p className="rounded-3xl border border-dashed border-border p-8 text-center text-muted-foreground">
-            No workers match that search yet.
-          </p>
+          <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+            <p className="text-sm font-medium text-muted-foreground">No workers match that search yet.</p>
+          </div>
         )}
       </div>
     </AppShell>
