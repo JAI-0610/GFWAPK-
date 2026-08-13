@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { Briefcase, IndianRupee, PlusCircle, Search, Users, Wallet } from "lucide-react";
 
 import farmerField from "@/assets/farmer-field.jpg";
@@ -19,7 +19,11 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function Dashboard() {
   const { t } = useI18n();
-  const { profile, isWorker, isOwner, user } = useAuth();
+  const { profile, isWorker, isOwner, user, loading } = useAuth();
+
+  if (!loading && (!profile || !profile.onboarded)) {
+    return <Navigate to="/onboarding" />;
+  }
 
   const { data: jobs } = useQuery({
     queryKey: ["dash-jobs", isWorker, isOwner, user?.id],

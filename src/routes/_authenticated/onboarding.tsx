@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Handshake, Sprout, Tractor } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 import { LanguagePicker } from "@/components/LanguagePicker";
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/_authenticated/onboarding")({
 
 function Onboarding() {
   const { t, lang } = useI18n();
-  const { user, refresh } = useAuth();
+  const { user, refresh, profile, roles } = useAuth();
   const navigate = useNavigate();
   const { role: intendedRole } = Route.useSearch();
   const [role, setRole] = useState<Intent>(() => {
@@ -46,6 +46,23 @@ function Onboarding() {
   const [village, setVillage] = useState("");
   const [district, setDistrict] = useState("");
   const [busy, setBusy] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (profile && !initialized) {
+      setFullName(profile.full_name ?? "");
+      setPhone(profile.phone ?? "");
+      setVillage(profile.village ?? "");
+      setDistrict(profile.district ?? "");
+      
+      if (roles && roles.length > 0) {
+        if (roles.includes("worker") && roles.includes("landlord")) setRole("both");
+        else if (roles.includes("landlord")) setRole("landlord");
+        else if (roles.includes("worker")) setRole("worker");
+      }
+      setInitialized(true);
+    }
+  }, [profile, roles, initialized]);
 
   const save = async () => {
     if (!user) return;
