@@ -12,12 +12,12 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Talk to the GO FARM WORK team about hiring crews, finding farm work, payments or partnerships. Support available in 121 Indian languages.",
+          "Talk to the GO FARM WORK team about hiring crews, finding farm work, payments or partnerships. Support available in 14 Indian languages.",
       },
       { property: "og:title", content: "Contact GO FARM WORK" },
       {
         property: "og:description",
-        content: "Support for farms and farm partners in 121 Indian languages.",
+        content: "Support for farms and farm partners in 14 Indian languages.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

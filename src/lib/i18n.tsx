@@ -3,249 +3,35 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 export type LangCode =
   | "en"
   | "kn"
-  | "as"
-  | "bn"
-  | "bhil"
-  | "bhum"
-  | "brx"
-  | "bodo"
-  | "doi"
-  | "garo"
-  | "gond"
-  | "gu"
   | "hi"
-  | "ho"
-  | "karb"
-  | "ks"
-  | "khan"
-  | "khas"
-  | "khon"
-  | "kok"
-  | "kony"
-  | "kork"
-  | "koya"
-  | "kuru"
-  | "mai"
-  | "ml"
-  | "mni"
   | "mr"
-  | "mizo"
-  | "mund"
-  | "muri"
-  | "ne"
-  | "or"
-  | "pa"
-  | "regi"
-  | "regi52"
-  | "regi53"
-  | "regi54"
-  | "regi55"
-  | "regi56"
-  | "regi57"
-  | "regi58"
-  | "regi59"
-  | "regi60"
-  | "regi61"
-  | "regi44"
-  | "regi62"
-  | "regi63"
-  | "regi64"
-  | "regi65"
-  | "regi66"
-  | "regi67"
-  | "regi68"
-  | "regi69"
-  | "regi70"
-  | "regi71"
-  | "regi45"
-  | "regi72"
-  | "regi73"
-  | "regi74"
-  | "regi75"
-  | "regi76"
-  | "regi77"
-  | "regi78"
-  | "regi79"
-  | "regi80"
-  | "regi81"
-  | "regi46"
-  | "regi82"
-  | "regi83"
-  | "regi84"
-  | "regi85"
-  | "regi86"
-  | "regi87"
-  | "regi88"
-  | "regi89"
-  | "regi90"
-  | "regi91"
-  | "regi47"
-  | "regi92"
-  | "regi93"
-  | "regi94"
-  | "regi95"
-  | "regi96"
-  | "regi97"
-  | "regi98"
-  | "regi99"
-  | "regi100"
-  | "regi101"
-  | "regi48"
-  | "regi102"
-  | "regi103"
-  | "regi104"
-  | "regi105"
-  | "regi106"
-  | "regi107"
-  | "regi108"
-  | "regi109"
-  | "regi110"
-  | "regi111"
-  | "regi49"
-  | "regi112"
-  | "regi113"
-  | "regi114"
-  | "regi115"
-  | "regi116"
-  | "regi117"
-  | "regi118"
-  | "regi119"
-  | "regi120"
-  | "regi50"
-  | "regi51"
-  | "sa"
-  | "sat"
-  | "sava"
-  | "sd"
   | "ta"
   | "te"
-  | "trip"
-  | "tulu"
-  | "ur";
+  | "ml"
+  | "bn"
+  | "pa"
+  | "gu"
+  | "or"
+  | "as"
+  | "ur"
+  | "tcy";
 
 
 export const LANGUAGES: { code: LangCode; label: string; native: string; bcp47: string }[] = [
   { code: "en", label: "English", native: "English", bcp47: "en-IN" },
   { code: "kn", label: "Kannada", native: "ಕನ್ನಡ", bcp47: "kn-IN" },
-  { code: "as", label: "Assamese", native: "অসমীয়া", bcp47: "as-IN" },
-  { code: "bn", label: "Bengali", native: "বাংলা", bcp47: "bn-IN" },
-  { code: "bhil", label: "Bhili", native: "Bhili", bcp47: "en-IN" },
-  { code: "bhum", label: "Bhumij", native: "Bhumij", bcp47: "en-IN" },
-  { code: "brx", label: "Bodo", native: "बर'", bcp47: "brx-IN" },
-  { code: "bodo", label: "Bodo", native: "Bodo", bcp47: "en-IN" },
-  { code: "doi", label: "Dogri", native: "डोगरी", bcp47: "doi-IN" },
-  { code: "garo", label: "Garo", native: "Garo", bcp47: "en-IN" },
-  { code: "gond", label: "Gondi", native: "Gondi", bcp47: "en-IN" },
-  { code: "gu", label: "Gujarati", native: "ગુજરાતી", bcp47: "gu-IN" },
   { code: "hi", label: "Hindi", native: "हिन्दी", bcp47: "hi-IN" },
-  { code: "ho", label: "Ho", native: "Ho", bcp47: "en-IN" },
-  { code: "karb", label: "Karbi", native: "Karbi", bcp47: "en-IN" },
-  { code: "ks", label: "Kashmiri", native: "कॉशुर", bcp47: "ks-IN" },
-  { code: "khan", label: "Khandeshi", native: "Khandeshi", bcp47: "en-IN" },
-  { code: "khas", label: "Khasi", native: "Khasi", bcp47: "en-IN" },
-  { code: "khon", label: "Khond", native: "Khond", bcp47: "en-IN" },
-  { code: "kok", label: "Konkani", native: "कोंकणी", bcp47: "kok-IN" },
-  { code: "kony", label: "Konyak", native: "Konyak", bcp47: "en-IN" },
-  { code: "kork", label: "Korku", native: "Korku", bcp47: "en-IN" },
-  { code: "koya", label: "Koya", native: "Koya", bcp47: "en-IN" },
-  { code: "kuru", label: "Kurukh", native: "Kurukh", bcp47: "en-IN" },
-  { code: "mai", label: "Maithili", native: "मैथिली", bcp47: "mai-IN" },
-  { code: "ml", label: "Malayalam", native: "മലയാളം", bcp47: "ml-IN" },
-  { code: "mni", label: "Manipuri", native: "মৈতৈলোন্", bcp47: "mni-IN" },
   { code: "mr", label: "Marathi", native: "मराठी", bcp47: "mr-IN" },
-  { code: "mizo", label: "Mizo", native: "Mizo", bcp47: "en-IN" },
-  { code: "mund", label: "Munda", native: "Munda", bcp47: "en-IN" },
-  { code: "muri", label: "Muria", native: "Muria", bcp47: "en-IN" },
-  { code: "ne", label: "Nepali", native: "नेपाली", bcp47: "ne-IN" },
-  { code: "or", label: "Odia", native: "ଓଡ଼ିଆ", bcp47: "or-IN" },
-  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", bcp47: "pa-IN" },
-  { code: "regi", label: "Regional Language 1", native: "Regional Language 1", bcp47: "en-IN" },
-  { code: "regi52", label: "Regional Language 10", native: "Regional Language 10", bcp47: "en-IN" },
-  { code: "regi53", label: "Regional Language 11", native: "Regional Language 11", bcp47: "en-IN" },
-  { code: "regi54", label: "Regional Language 12", native: "Regional Language 12", bcp47: "en-IN" },
-  { code: "regi55", label: "Regional Language 13", native: "Regional Language 13", bcp47: "en-IN" },
-  { code: "regi56", label: "Regional Language 14", native: "Regional Language 14", bcp47: "en-IN" },
-  { code: "regi57", label: "Regional Language 15", native: "Regional Language 15", bcp47: "en-IN" },
-  { code: "regi58", label: "Regional Language 16", native: "Regional Language 16", bcp47: "en-IN" },
-  { code: "regi59", label: "Regional Language 17", native: "Regional Language 17", bcp47: "en-IN" },
-  { code: "regi60", label: "Regional Language 18", native: "Regional Language 18", bcp47: "en-IN" },
-  { code: "regi61", label: "Regional Language 19", native: "Regional Language 19", bcp47: "en-IN" },
-  { code: "regi44", label: "Regional Language 2", native: "Regional Language 2", bcp47: "en-IN" },
-  { code: "regi62", label: "Regional Language 20", native: "Regional Language 20", bcp47: "en-IN" },
-  { code: "regi63", label: "Regional Language 21", native: "Regional Language 21", bcp47: "en-IN" },
-  { code: "regi64", label: "Regional Language 22", native: "Regional Language 22", bcp47: "en-IN" },
-  { code: "regi65", label: "Regional Language 23", native: "Regional Language 23", bcp47: "en-IN" },
-  { code: "regi66", label: "Regional Language 24", native: "Regional Language 24", bcp47: "en-IN" },
-  { code: "regi67", label: "Regional Language 25", native: "Regional Language 25", bcp47: "en-IN" },
-  { code: "regi68", label: "Regional Language 26", native: "Regional Language 26", bcp47: "en-IN" },
-  { code: "regi69", label: "Regional Language 27", native: "Regional Language 27", bcp47: "en-IN" },
-  { code: "regi70", label: "Regional Language 28", native: "Regional Language 28", bcp47: "en-IN" },
-  { code: "regi71", label: "Regional Language 29", native: "Regional Language 29", bcp47: "en-IN" },
-  { code: "regi45", label: "Regional Language 3", native: "Regional Language 3", bcp47: "en-IN" },
-  { code: "regi72", label: "Regional Language 30", native: "Regional Language 30", bcp47: "en-IN" },
-  { code: "regi73", label: "Regional Language 31", native: "Regional Language 31", bcp47: "en-IN" },
-  { code: "regi74", label: "Regional Language 32", native: "Regional Language 32", bcp47: "en-IN" },
-  { code: "regi75", label: "Regional Language 33", native: "Regional Language 33", bcp47: "en-IN" },
-  { code: "regi76", label: "Regional Language 34", native: "Regional Language 34", bcp47: "en-IN" },
-  { code: "regi77", label: "Regional Language 35", native: "Regional Language 35", bcp47: "en-IN" },
-  { code: "regi78", label: "Regional Language 36", native: "Regional Language 36", bcp47: "en-IN" },
-  { code: "regi79", label: "Regional Language 37", native: "Regional Language 37", bcp47: "en-IN" },
-  { code: "regi80", label: "Regional Language 38", native: "Regional Language 38", bcp47: "en-IN" },
-  { code: "regi81", label: "Regional Language 39", native: "Regional Language 39", bcp47: "en-IN" },
-  { code: "regi46", label: "Regional Language 4", native: "Regional Language 4", bcp47: "en-IN" },
-  { code: "regi82", label: "Regional Language 40", native: "Regional Language 40", bcp47: "en-IN" },
-  { code: "regi83", label: "Regional Language 41", native: "Regional Language 41", bcp47: "en-IN" },
-  { code: "regi84", label: "Regional Language 42", native: "Regional Language 42", bcp47: "en-IN" },
-  { code: "regi85", label: "Regional Language 43", native: "Regional Language 43", bcp47: "en-IN" },
-  { code: "regi86", label: "Regional Language 44", native: "Regional Language 44", bcp47: "en-IN" },
-  { code: "regi87", label: "Regional Language 45", native: "Regional Language 45", bcp47: "en-IN" },
-  { code: "regi88", label: "Regional Language 46", native: "Regional Language 46", bcp47: "en-IN" },
-  { code: "regi89", label: "Regional Language 47", native: "Regional Language 47", bcp47: "en-IN" },
-  { code: "regi90", label: "Regional Language 48", native: "Regional Language 48", bcp47: "en-IN" },
-  { code: "regi91", label: "Regional Language 49", native: "Regional Language 49", bcp47: "en-IN" },
-  { code: "regi47", label: "Regional Language 5", native: "Regional Language 5", bcp47: "en-IN" },
-  { code: "regi92", label: "Regional Language 50", native: "Regional Language 50", bcp47: "en-IN" },
-  { code: "regi93", label: "Regional Language 51", native: "Regional Language 51", bcp47: "en-IN" },
-  { code: "regi94", label: "Regional Language 52", native: "Regional Language 52", bcp47: "en-IN" },
-  { code: "regi95", label: "Regional Language 53", native: "Regional Language 53", bcp47: "en-IN" },
-  { code: "regi96", label: "Regional Language 54", native: "Regional Language 54", bcp47: "en-IN" },
-  { code: "regi97", label: "Regional Language 55", native: "Regional Language 55", bcp47: "en-IN" },
-  { code: "regi98", label: "Regional Language 56", native: "Regional Language 56", bcp47: "en-IN" },
-  { code: "regi99", label: "Regional Language 57", native: "Regional Language 57", bcp47: "en-IN" },
-  { code: "regi100", label: "Regional Language 58", native: "Regional Language 58", bcp47: "en-IN" },
-  { code: "regi101", label: "Regional Language 59", native: "Regional Language 59", bcp47: "en-IN" },
-  { code: "regi48", label: "Regional Language 6", native: "Regional Language 6", bcp47: "en-IN" },
-  { code: "regi102", label: "Regional Language 60", native: "Regional Language 60", bcp47: "en-IN" },
-  { code: "regi103", label: "Regional Language 61", native: "Regional Language 61", bcp47: "en-IN" },
-  { code: "regi104", label: "Regional Language 62", native: "Regional Language 62", bcp47: "en-IN" },
-  { code: "regi105", label: "Regional Language 63", native: "Regional Language 63", bcp47: "en-IN" },
-  { code: "regi106", label: "Regional Language 64", native: "Regional Language 64", bcp47: "en-IN" },
-  { code: "regi107", label: "Regional Language 65", native: "Regional Language 65", bcp47: "en-IN" },
-  { code: "regi108", label: "Regional Language 66", native: "Regional Language 66", bcp47: "en-IN" },
-  { code: "regi109", label: "Regional Language 67", native: "Regional Language 67", bcp47: "en-IN" },
-  { code: "regi110", label: "Regional Language 68", native: "Regional Language 68", bcp47: "en-IN" },
-  { code: "regi111", label: "Regional Language 69", native: "Regional Language 69", bcp47: "en-IN" },
-  { code: "regi49", label: "Regional Language 7", native: "Regional Language 7", bcp47: "en-IN" },
-  { code: "regi112", label: "Regional Language 70", native: "Regional Language 70", bcp47: "en-IN" },
-  { code: "regi113", label: "Regional Language 71", native: "Regional Language 71", bcp47: "en-IN" },
-  { code: "regi114", label: "Regional Language 72", native: "Regional Language 72", bcp47: "en-IN" },
-  { code: "regi115", label: "Regional Language 73", native: "Regional Language 73", bcp47: "en-IN" },
-  { code: "regi116", label: "Regional Language 74", native: "Regional Language 74", bcp47: "en-IN" },
-  { code: "regi117", label: "Regional Language 75", native: "Regional Language 75", bcp47: "en-IN" },
-  { code: "regi118", label: "Regional Language 76", native: "Regional Language 76", bcp47: "en-IN" },
-  { code: "regi119", label: "Regional Language 77", native: "Regional Language 77", bcp47: "en-IN" },
-  { code: "regi120", label: "Regional Language 78", native: "Regional Language 78", bcp47: "en-IN" },
-  { code: "regi50", label: "Regional Language 8", native: "Regional Language 8", bcp47: "en-IN" },
-  { code: "regi51", label: "Regional Language 9", native: "Regional Language 9", bcp47: "en-IN" },
-  { code: "sa", label: "Sanskrit", native: "संस्कृतम्", bcp47: "sa-IN" },
-  { code: "sat", label: "Santali", native: "ᱥᱟᱱᱛᱟᱲᱤ", bcp47: "sat-IN" },
-  { code: "sava", label: "Savara", native: "Savara", bcp47: "en-IN" },
-  { code: "sd", label: "Sindhi", native: "سنڌي", bcp47: "sd-IN" },
   { code: "ta", label: "Tamil", native: "தமிழ்", bcp47: "ta-IN" },
   { code: "te", label: "Telugu", native: "తెలుగు", bcp47: "te-IN" },
-  { code: "trip", label: "Tripuri", native: "Tripuri", bcp47: "en-IN" },
-  { code: "tulu", label: "Tulu", native: "Tulu", bcp47: "en-IN" },
+  { code: "ml", label: "Malayalam", native: "മലയാളം", bcp47: "ml-IN" },
+  { code: "bn", label: "Bengali", native: "বাংলা", bcp47: "bn-IN" },
+  { code: "pa", label: "Punjabi", native: "ਪੰਜਾਬੀ", bcp47: "pa-IN" },
+  { code: "gu", label: "Gujarati", native: "ગુજરાતી", bcp47: "gu-IN" },
+  { code: "or", label: "Odia", native: "ଓଡ଼ିଆ", bcp47: "or-IN" },
+  { code: "as", label: "Assamese", native: "অসমীয়া", bcp47: "as-IN" },
   { code: "ur", label: "Urdu", native: "اردو", bcp47: "ur-IN" },
+  { code: "tcy", label: "Tulu", native: "ತುಳು", bcp47: "en-IN" },
 ];
 
 
@@ -909,7 +695,7 @@ const ur: Dict = {
   jobsNearYou: "قریب کا کام",
 };
 
-const DICTS: Record<LangCode, Dict> = { en, kn, as, bn, "bhil": en, "bhum": en, "brx": en, "bodo": en, "doi": en, "garo": en, "gond": en, gu, hi, "ho": en, "karb": en, "ks": en, "khan": en, "khas": en, "khon": en, "kok": en, "kony": en, "kork": en, "koya": en, "kuru": en, "mai": en, ml, "mni": en, mr, "mizo": en, "mund": en, "muri": en, "ne": en, or, pa, "regi": en, "regi52": en, "regi53": en, "regi54": en, "regi55": en, "regi56": en, "regi57": en, "regi58": en, "regi59": en, "regi60": en, "regi61": en, "regi44": en, "regi62": en, "regi63": en, "regi64": en, "regi65": en, "regi66": en, "regi67": en, "regi68": en, "regi69": en, "regi70": en, "regi71": en, "regi45": en, "regi72": en, "regi73": en, "regi74": en, "regi75": en, "regi76": en, "regi77": en, "regi78": en, "regi79": en, "regi80": en, "regi81": en, "regi46": en, "regi82": en, "regi83": en, "regi84": en, "regi85": en, "regi86": en, "regi87": en, "regi88": en, "regi89": en, "regi90": en, "regi91": en, "regi47": en, "regi92": en, "regi93": en, "regi94": en, "regi95": en, "regi96": en, "regi97": en, "regi98": en, "regi99": en, "regi100": en, "regi101": en, "regi48": en, "regi102": en, "regi103": en, "regi104": en, "regi105": en, "regi106": en, "regi107": en, "regi108": en, "regi109": en, "regi110": en, "regi111": en, "regi49": en, "regi112": en, "regi113": en, "regi114": en, "regi115": en, "regi116": en, "regi117": en, "regi118": en, "regi119": en, "regi120": en, "regi50": en, "regi51": en, "sa": en, "sat": en, "sava": en, "sd": en, ta, te, "trip": en, "tulu": en, ur };
+const DICTS: Record<LangCode, Dict> = { en, hi, mr, ta, te, kn, ml, bn, pa, gu, or, as, ur, tcy: en };
 
 
 const STORAGE_KEY = "gfw.lang";
