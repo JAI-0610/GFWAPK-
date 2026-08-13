@@ -307,14 +307,10 @@ function AuthPage() {
               <span className="relative bg-white px-4 text-xs font-medium text-gray-400">or continue with</span>
             </div>
 
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <Button type="button" variant="outline" onClick={google} className="h-12 rounded-xl border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm gap-2">
+            <div className="mt-8">
+              <Button type="button" variant="outline" onClick={google} className="h-12 w-full rounded-xl border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm gap-2">
                 <GoogleMark />
-                Google
-              </Button>
-              <Button type="button" variant="outline" className="h-12 rounded-xl border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm gap-2">
-                <AppleMark />
-                Apple
+                Continue with Google
               </Button>
             </div>
 
@@ -374,15 +370,6 @@ function GoogleMark() {
       <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.87-3a7.2 7.2 0 0 1-10.73-3.78H1.36v3.09A12 12 0 0 0 12 24Z" />
       <path fill="#FBBC05" d="M5.35 14.32a7.2 7.2 0 0 1 0-4.62V6.6H1.36a12 12 0 0 0 0 10.8l3.99-3.08Z" />
       <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.43-3.42A11.5 11.5 0 0 0 12 0 12 12 0 0 0 1.36 6.6l3.99 3.1A7.2 7.2 0 0 1 12 4.75Z" />
-    </svg>
-  );
-}
-
-function AppleMark() {
-  return (
-    <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
-      <path fill="#000" d="M12.15 15.54c-.1-.02-.21-.02-.3 0-1.84.45-3.37-1.12-3.37-3.01 0-1.8 1.48-3.3 3.3-3.3.1 0 .19 0 .28.02 1.93.42 3.36 2.1 3.36 4.14 0 2.16-1.57 3.91-3.27 4.15Z" opacity=".1" />
-      <path fill="#000" d="M16.24 16.51c-1.37.98-2.61.95-3.77.08-.41-.31-1.12-.31-1.53 0-1.16.87-2.4.9-3.77-.08-1.74-1.25-3.46-4.04-3.46-7.39 0-3.69 2.1-5.63 4.28-5.63 1.3 0 2.45.69 3.12.69.66 0 1.98-.8 3.51-.69 1.7.12 3.25 1 4.18 2.44-3.55 1.93-3 7.02.6 8.51-.64 1.45-1.55 2.92-3.16 4.07ZM12 6.54c-.06-1.95 1.51-3.6 3.4-3.81.33 2-1.39 3.9-3.4 3.81Z" />
     </svg>
   );
 }
