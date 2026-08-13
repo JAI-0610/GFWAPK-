@@ -269,7 +269,7 @@ function Onboarding() {
           </div>
 
           <div className="flex flex-1 items-start justify-center px-4 py-10 lg:px-12">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-5xl">
               <div className="mb-7">
                 <span className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-widest text-secondary-foreground">
                   Complete Profile
@@ -277,9 +277,6 @@ function Onboarding() {
                 <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-foreground">
                   Just a few more details
                 </h1>
-                <p className="mt-2 text-base text-muted-foreground">
-                  You are successfully signed in! We just need your location to show you relevant farm work and workers.
-                </p>
               </div>
 
               <div className="relative overflow-hidden rounded-3xl border border-white/30 bg-white p-6 shadow-[0_8px_40px_rgb(0,0,0,0.04)] sm:p-8">
