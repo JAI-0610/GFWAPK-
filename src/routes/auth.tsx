@@ -181,7 +181,7 @@ function AuthPage() {
           <div className="flex gap-10">
             <Stat value="Free" label="To join & post work" />
             <Stat value="Escrow" label="Wages held safely" />
-            <Stat value="13" label="Languages" />
+            <Stat value="121" label="Languages" />
           </div>
 
         </div>
@@ -479,7 +479,7 @@ const TRUST = [
 
   "Verified farms and workers, checked by our team",
   "Escrow payments — money released only after work",
-  "Voice-first, works on any phone, in 13 languages",
+  "Voice-first, works on any phone, in 121 languages",
 ];
 
 function Stat({ value, label }: { value: string; label: string }) {

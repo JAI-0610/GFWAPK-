@@ -44,7 +44,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Post farm work or find work near your village. Verified profiles, milestone-based secure payments, 13 Indian languages.",
+          "Post farm work or find work near your village. Verified profiles, milestone-based secure payments, 121 Indian languages.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/")({
 const stats = [
   { icon: BadgeCheck, value: "Verified", label: "Profiles checked before hiring" },
   { icon: IndianRupee, value: "0%", label: "Fee taken from worker wages" },
-  { icon: Users, value: "13", label: "Indian languages supported" },
+  { icon: Users, value: "121", label: "Indian languages supported" },
   { icon: Briefcase, value: "Escrow", label: "Wages held safely until work is done" },
 ];
 
@@ -177,7 +177,7 @@ const faqs = [
   },
   {
     q: "Can I use the app in regional languages?",
-    a: "Yes. The whole app works in 13 Indian languages with listen-and-speak buttons on every screen, so you never need to type or read to use it.",
+    a: "Yes. The whole app works in 121 Indian languages with listen-and-speak buttons on every screen, so you never need to type or read to use it.",
   },
 ];
 
@@ -231,7 +231,7 @@ function Landing() {
               Operating across India
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
-              {["31 districts", "29 job categories", "13 languages"].map((chip) => (
+              {["31 districts", "29 job categories", "121 languages"].map((chip) => (
                 <span
                   key={chip}
                   className="rounded-full border border-primary-deep-foreground/25 px-4 py-1.5 text-sm"

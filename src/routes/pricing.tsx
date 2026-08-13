@@ -39,7 +39,7 @@ const plans = [
       "Unlimited job browsing",
       "Up to 3 proposals / month",
       "Basic profile visibility",
-      "Voice search in 13 languages",
+      "Voice search in 121 languages",
       "Community support",
     ],
     popular: false,

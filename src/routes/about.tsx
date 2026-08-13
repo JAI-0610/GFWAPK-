@@ -11,7 +11,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "GO FARM WORK connects farm owners with skilled farm partners across India, with fair wages, secure payments and support for 13 Indian languages.",
+          "GO FARM WORK connects farm owners with skilled farm partners across India, with fair wages, secure payments and support for 121 Indian languages.",
       },
       { property: "og:title", content: "About GO FARM WORK" },
       {
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/about")({
 const values = [
   { icon: HeartHandshake, title: "Dignity first", body: "Farm work is skilled work. Every profile shows real experience, ratings and fair rates." },
   { icon: ShieldCheck, title: "Money you can trust", body: "Wages are funded up front and released as work is confirmed, so nobody chases payment." },
-  { icon: Globe2, title: "Every Indian language", body: "13 languages with listen and speak buttons, so reading and typing are never a barrier." },
+  { icon: Globe2, title: "Every Indian language", body: "121 languages with listen and speak buttons, so reading and typing are never a barrier." },
   { icon: Sprout, title: "Village-first design", body: "Built for low bandwidth, small screens and one-handed use in the middle of a field." },
 ];
 
