@@ -44,7 +44,7 @@ function Contact() {
               e.preventDefault();
               const subject = encodeURIComponent(`GO FARM WORK enquiry from ${name || "a visitor"}`);
               const body = encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`);
-              window.location.href = `mailto:support@gofarmwork.in?subject=${subject}&body=${body}`;
+              window.location.href = `mailto:gofarmwork@gmail.com?subject=${subject}&body=${body}`;
               toast.success("Opening your email app…");
             }}
             className="rounded-[2rem] border border-border bg-card p-8 shadow-card"
@@ -72,10 +72,10 @@ function Contact() {
           </form>
 
           <div className="grid gap-4 self-start">
-            <Info icon={Mail} title="Email" body="support@gofarmwork.in" />
-            <Info icon={Phone} title="Helpline" body="1800 200 4567 (8am – 8pm, all days)" />
+            <Info icon={Mail} title="Email" body="gofarmwork@gmail.com" />
+            <Info icon={Phone} title="Helpline" body="+91 6360566370" />
             <Info icon={MessageCircle} title="WhatsApp" body="Coming soon — job alerts on WhatsApp" />
-            <Info icon={MapPin} title="Office" body="Pune, Maharashtra, India" />
+            <Info icon={MapPin} title="Office" body="Bangalore, India" />
           </div>
         </div>
       </section>
