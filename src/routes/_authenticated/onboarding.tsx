@@ -209,6 +209,14 @@ function Onboarding() {
     }
   };
 
+  const google = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
+    });
+    if (error) toast.error("Google sign-in failed. Please try again.");
+  };
+
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[1.05fr_1fr]">
       {/* Left: cinematic brand panel */}
@@ -321,7 +329,7 @@ function Onboarding() {
                             className="h-12 rounded-xl text-sm border-gray-200 shadow-sm pr-10" 
                           />
                           <div className="absolute right-3 text-gray-400">
-                            <MicButton onText={(text: string) => setFullName(text)} />
+                            <MicButton size="sm" onText={(text: string) => setFullName(text)} />
                           </div>
                         </div>
                       </div>
@@ -516,7 +524,7 @@ function Onboarding() {
                       <span className="relative bg-white px-4 text-xs font-medium text-gray-400">or sign up with</span>
                     </div>
 
-                    <Button type="button" variant="outline" className="h-12 w-full rounded-xl border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm gap-2">
+                    <Button type="button" onClick={google} variant="outline" className="h-12 w-full rounded-xl border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm gap-2">
                       <GoogleMark />
                       Continue with Google
                     </Button>
