@@ -21,7 +21,7 @@ export const askFarmhand = createServerFn({ method: "POST" })
     const key = process.env["EXTERNAL_API_KEY"];
     if (!key) throw new Error("AI is not configured");
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-pro-preview:generateContent?key=${key}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
