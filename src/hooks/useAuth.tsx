@@ -14,6 +14,8 @@ export type Profile = {
   village: string | null;
   district: string | null;
   state: string | null;
+  taluk: string | null;
+  gender: string | null;
   language: string;
   bio: string | null;
   skills: string[];
