@@ -202,8 +202,9 @@ function Onboarding() {
 
       await refresh();
       navigate({ to: "/dashboard" });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not save");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error?.message || "Could not save");
     } finally {
       setBusy(false);
     }
@@ -212,7 +213,7 @@ function Onboarding() {
   const google = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: `${window.location.origin}/dashboard` },
     });
     if (error) toast.error("Google sign-in failed. Please try again.");
   };

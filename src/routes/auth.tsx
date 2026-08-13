@@ -100,7 +100,7 @@ function AuthPage() {
   const google = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: `${window.location.origin}/dashboard` },
     });
     if (error) toast.error("Google sign-in failed. Please try again.");
   };
