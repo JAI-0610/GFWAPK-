@@ -3,7 +3,6 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
-  Lock,
   Phone,
   ShieldCheck,
   MessageCircle,
@@ -13,7 +12,9 @@ import {
   Briefcase,
   ChevronDown,
   Info,
-  Globe
+  Globe,
+  Mail,
+  Lock
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -53,9 +54,11 @@ function AuthPage() {
   const { role, mode: initialMode } = Route.useSearch();
   const [mode, setMode] = useState<"signin" | "signup">(initialMode ?? "signin");
 
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -68,10 +71,12 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     try {
-      const email = `${phone.replace(/\D/g, '')}@gofarmwork.internal`; // Map phone to internal email for now
+      // Use provided email or map phone to internal email
+      const authEmail = email.trim() !== "" ? email : `${phone.replace(/\D/g, '')}@gofarmwork.internal`;
+      
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
-          email,
+          email: authEmail,
           password,
           options: {
             data: { phone },
@@ -212,99 +217,114 @@ function AuthPage() {
           <div className="w-full max-w-[440px] bg-white rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-gray-100 p-8 sm:p-10 relative z-30">
             
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
-                Welcome to <span className="text-[#155d27]">Go Farm Work</span>
+              <h2 className="text-[22px] font-bold text-gray-900 tracking-tight">
+                Welcome back to
               </h2>
-              <p className="text-sm text-gray-500 mt-2 font-medium">Sign in or create an account to continue</p>
-            </div>
-
-            {/* Tabs */}
-            <div className="flex items-center mb-8 border-b border-gray-200">
-              <button
-                type="button"
-                onClick={() => setMode("signin")}
-                className={cn(
-                  "flex-1 pb-4 text-center font-bold text-[15px] transition-colors relative",
-                  !isSignup ? "text-[#155d27]" : "text-gray-400 hover:text-gray-600"
-                )}
-              >
-                Sign In
-                {!isSignup && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#155d27] rounded-t-full" />}
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode("signup")}
-                className={cn(
-                  "flex-1 pb-4 text-center font-bold text-[15px] transition-colors relative",
-                  isSignup ? "text-[#155d27]" : "text-gray-400 hover:text-gray-600"
-                )}
-              >
-                Sign Up
-                {isSignup && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#155d27] rounded-t-full" />}
-              </button>
+              <h1 className="text-3xl font-extrabold text-[#155d27] mt-1 tracking-tight">
+                Go Farm Work
+              </h1>
+              <p className="text-sm text-gray-500 mt-2 font-medium">Sign in to continue to your account</p>
             </div>
 
             <form onSubmit={submit} className="space-y-5">
-              <div className="space-y-2">
-                <Label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Mobile Number</Label>
-                <div className="relative flex rounded-xl border border-gray-300 bg-white overflow-hidden focus-within:ring-2 focus-within:ring-[#155d27] focus-within:border-transparent transition-all">
-                  <div className="flex items-center px-4 bg-gray-50/50 border-r border-gray-200 text-gray-600 font-medium text-sm">
-                    +91 <ChevronDown className="size-4 ml-1 opacity-50" />
-                  </div>
+              <div className="space-y-1.5">
+                <Label className="text-sm font-bold text-gray-900">Email address</Label>
+                <div className="relative">
                   <Input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="Enter your mobile number"
-                    className="flex-1 border-0 rounded-none h-12 focus-visible:ring-0 text-base px-4"
-                    required
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    className="h-12 rounded-xl border-gray-200 focus-visible:ring-[#155d27] text-sm px-10"
                   />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                    <Phone className="size-5 text-gray-400" />
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                    <Mail className="size-4 text-gray-400" />
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs font-bold text-gray-700 uppercase tracking-wider">Password</Label>
+              <div className="space-y-1.5">
+                <Label className="text-sm font-bold text-gray-900">Password</Label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="h-12 rounded-xl border-gray-300 focus-visible:ring-[#155d27] text-base px-4 pr-12"
+                    className="h-12 rounded-xl border-gray-200 focus-visible:ring-[#155d27] text-sm px-10"
                     required
                   />
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                    <Lock className="size-4 text-gray-400" />
+                  </div>
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                   >
-                    {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+                    {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                   </button>
+                </div>
+                {!isSignup && (
+                  <div className="flex justify-end pt-1">
+                    <a href="#" className="text-[13px] font-bold text-[#155d27] hover:underline">Forgot password?</a>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-sm font-bold text-gray-900">Phone number</Label>
+                <div className="relative flex rounded-xl border border-gray-200 bg-white overflow-hidden focus-within:ring-2 focus-within:ring-[#155d27] focus-within:border-transparent transition-all">
+                  <div className="flex items-center px-4 bg-gray-50/50 border-r border-gray-200 text-gray-600 font-medium text-sm gap-2">
+                    <img src="https://flagcdn.com/w20/in.png" alt="India" className="w-5" />
+                    +91 <ChevronDown className="size-4 ml-1 opacity-50" />
+                  </div>
+                  <Input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Enter your phone number"
+                    className="flex-1 border-0 rounded-none h-12 focus-visible:ring-0 text-sm px-4"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                    <Phone className="size-4 text-gray-400" />
+                  </div>
                 </div>
               </div>
 
               {!isSignup && (
-                <div className="flex justify-end">
-                  <a href="#" className="text-sm font-bold text-[#155d27] hover:underline">Forgot password?</a>
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center space-x-2">
+                    <input 
+                      type="checkbox" 
+                      id="remember" 
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="size-4 rounded border-gray-300 text-[#155d27] focus:ring-[#155d27]" 
+                    />
+                    <label htmlFor="remember" className="text-sm font-medium text-gray-900 cursor-pointer">
+                      Remember me
+                    </label>
+                  </div>
+                  <a href="#" className="text-sm font-bold text-[#155d27] hover:underline">
+                    Use passwordless login
+                  </a>
                 </div>
               )}
 
               <Button
                 type="submit"
                 disabled={busy}
-                className="w-full h-12 rounded-xl bg-[#0f4d1e] hover:bg-[#0a3d17] text-white font-bold text-[15px] shadow-md transition-all flex items-center justify-center gap-2 mt-2"
+                className="w-full h-12 rounded-xl bg-[#0f4d1e] hover:bg-[#0a3d17] text-white font-bold text-[15px] shadow-md transition-all flex items-center justify-center gap-2 mt-4"
               >
-                {busy ? "Please wait..." : isSignup ? "Create Account" : "Sign In"}
+                {busy ? "Please wait..." : isSignup ? "Sign Up" : "Sign In"}
                 {!busy && <ArrowRight className="size-5" />}
               </Button>
             </form>
 
             <div className="mt-8 relative flex items-center justify-center">
               <span className="absolute h-px w-full bg-gray-200"></span>
-              <span className="relative bg-white px-4 text-xs font-medium text-gray-400">or continue with</span>
+              <span className="relative bg-white px-4 text-xs font-medium text-gray-400">or sign in with</span>
             </div>
 
             <div className="mt-8">
