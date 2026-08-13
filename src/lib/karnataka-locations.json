@@ -1,0 +1,13 @@
+{
+  "states": {
+    "Karnataka": {
+      "districts": {
+        "Bangalore Urban": ["Bangalore North", "Bangalore South", "Bangalore East", "Anekal", "Yelahanka"],
+        "Mysore": ["Mysore", "Hunsur", "Krishnarajanagara", "Nanjangud", "Heggadadevanakote", "Piriyapatna", "T. Narasipura"],
+        "Belagavi": ["Athani", "Bailhongal", "Belagavi", "Chikodi", "Gokak", "Hukkeri", "Khanapur", "Ramdurg", "Raybag", "Saundatti"],
+        "Dakshina Kannada": ["Mangalore", "Bantwal", "Puttur", "Belthangady", "Sullia", "Moodabidri", "Kadaba"],
+        "Udupi": ["Udupi", "Kundapura", "Karkala", "Byndoor", "Brahmavara", "Kaup", "Hebri"]
+      }
+    }
+  }
+}

@@ -24,21 +24,36 @@ function ProfilePage() {
   return (
     <AppShell title={t("profile")} subtitle={profile?.full_name ?? ""}>
       <div className="space-y-4 rounded-xl border border-border bg-card p-6 shadow-sm">
-        <div className="flex items-center justify-between pb-2 border-b border-border/50">
-          <span className="rounded-md bg-secondary px-3 py-1 text-sm font-bold text-secondary-foreground">
-            {role === "landlord" ? t("landlord") : t("worker")}
-          </span>
-          {profile?.is_verified ? (
-            <span className="inline-flex items-center gap-1.5 text-sm font-bold text-money">
-              <BadgeCheck className="size-5" /> Verified
-            </span>
-          ) : null}
+        <div className="flex items-center gap-4 pb-4 border-b border-border/50">
+          {profile?.photo_url ? (
+            <img src={profile.photo_url} alt="Profile" className="size-16 rounded-full object-cover border-2 border-primary" />
+          ) : (
+            <div className="size-16 rounded-full bg-secondary flex items-center justify-center text-xl font-bold text-secondary-foreground">
+              {profile?.full_name?.charAt(0) || "U"}
+            </div>
+          )}
+          <div className="flex-1">
+            <h2 className="text-lg font-bold">{profile?.full_name}</h2>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="rounded-md bg-secondary px-2 py-0.5 text-xs font-bold text-secondary-foreground">
+                {role === "landlord" ? t("landlord") : t("worker")}
+              </span>
+              {profile?.is_verified ? (
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-money">
+                  <BadgeCheck className="size-4" /> Verified
+                </span>
+              ) : null}
+            </div>
+          </div>
         </div>
 
         <div className="space-y-1 py-2">
+          <Row label="Gender" value={profile?.gender ?? "—"} />
           <Row label={t("phone")} value={profile?.phone ?? "—"} />
-          <Row label={t("village")} value={profile?.village ?? "—"} />
+          <Row label="State" value={profile?.state ?? "—"} />
           <Row label={t("district")} value={profile?.district ?? "—"} />
+          <Row label="Taluk" value={profile?.taluk ?? "—"} />
+          <Row label={t("village")} value={profile?.village ?? "—"} />
           <Row
             label="Rating"
             value={

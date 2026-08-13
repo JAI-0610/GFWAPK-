@@ -591,18 +591,20 @@ export type Database = {
           district: string | null
           equipment: string[]
           farm_name: string | null
-          full_name: string
+          full_name: string | null
+          gender: string | null
           id: string
-          is_verified: boolean
-          jobs_completed: number
-          language: string
-          onboarded: boolean
+          is_verified: boolean | null
+          jobs_completed: number | null
+          language: string | null
+          onboarded: boolean | null
           phone: string | null
           phone_verified: boolean
           photo_url: string | null
-          rating: number
+          rating: number | null
           skills: string[]
           state: string | null
+          taluk: string | null
           updated_at: string
           village: string | null
           whatsapp_opt_in: boolean
@@ -616,18 +618,20 @@ export type Database = {
           district?: string | null
           equipment?: string[]
           farm_name?: string | null
-          full_name?: string
+          full_name?: string | null
+          gender?: string | null
           id: string
-          is_verified?: boolean
-          jobs_completed?: number
-          language?: string
-          onboarded?: boolean
+          is_verified?: boolean | null
+          jobs_completed?: number | null
+          language?: string | null
+          onboarded?: boolean | null
           phone?: string | null
           phone_verified?: boolean
           photo_url?: string | null
-          rating?: number
+          rating?: number | null
           skills?: string[]
           state?: string | null
+          taluk?: string | null
           updated_at?: string
           village?: string | null
           whatsapp_opt_in?: boolean
@@ -641,18 +645,20 @@ export type Database = {
           district?: string | null
           equipment?: string[]
           farm_name?: string | null
-          full_name?: string
+          full_name?: string | null
+          gender?: string | null
           id?: string
-          is_verified?: boolean
-          jobs_completed?: number
-          language?: string
-          onboarded?: boolean
+          is_verified?: boolean | null
+          jobs_completed?: number | null
+          language?: string | null
+          onboarded?: boolean | null
           phone?: string | null
           phone_verified?: boolean
           photo_url?: string | null
-          rating?: number
+          rating?: number | null
           skills?: string[]
           state?: string | null
+          taluk?: string | null
           updated_at?: string
           village?: string | null
           whatsapp_opt_in?: boolean
