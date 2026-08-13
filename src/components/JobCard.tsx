@@ -100,6 +100,7 @@ export function JobCard({ job }: { job: JobRow }) {
           <SaveJobButton jobId={job.id} />
         </div>
       </div>
+      </div>
     </Link>
   );
 }
