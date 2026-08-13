@@ -11,12 +11,12 @@ export default defineConfig({
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart({
       server: { 
-        preset: "vercel",
+        preset: "firebase",
         entry: "server" 
       }
     }),
     nitro({
-      preset: "vercel"
+      preset: "firebase"
     }),
     react(),
   ],
