@@ -257,7 +257,7 @@ function Onboarding() {
       </aside>
 
       {/* Right: form panel */}
-      <main className="relative flex min-h-screen flex-col overflow-hidden bg-background/50 h-screen overflow-y-auto">
+      <main className="relative flex min-h-screen flex-col bg-background/50 h-screen overflow-y-auto">
         <div className="absolute top-[-20%] right-[-10%] size-[60%] rounded-full bg-primary/20 blur-[120px] pointer-events-none z-0" />
         <div className="absolute bottom-[-20%] left-[-10%] size-[60%] rounded-full bg-money/10 blur-[120px] pointer-events-none z-0" />
         
