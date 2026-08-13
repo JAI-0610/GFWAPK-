@@ -11,12 +11,12 @@ export default defineConfig({
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart({
       server: { 
-        preset: "firebase",
+        preset: "netlify",
         entry: "server" 
       }
     }),
     nitro({
-      preset: "firebase"
+      preset: "netlify"
     }),
     react(),
   ],
