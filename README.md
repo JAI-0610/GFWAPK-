@@ -1010,15 +1010,15 @@ Your priority is to make GO FARM WORK feel like a professional, advanced freelan
 
 I need to add the database for long term use like for another 10 years, sending the Emails sms messages on WhatsApp, Payment gateway and All  Essential Backend system
 
-This project was built with [Lovable](https://lovable.dev).
+This project was built with [Project](https://app.dev).
 
-## Build with Lovable
+## Build with Project
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c17d3c25-cb15-45b6-990f-1082587b91a6).
+Continue developing this project in the [Project editor](https://app.dev/projects/c17d3c25-cb15-45b6-990f-1082587b91a6).
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- **Ship faster**: describe what you want to build and Project handles the code.
+- **Stay in sync**: every change made in Project is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Project, ready for your next prompt.
 
 ## Development
 

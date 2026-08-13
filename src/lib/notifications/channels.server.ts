@@ -15,13 +15,13 @@ export type ChannelResult = {
   error?: string | undefined;
 };
 
-const GATEWAY_URL = "https://connector-gateway.lovable.dev/twilio";
+const GATEWAY_URL = "https://api.twilio.com";
 
 function twilioCreds() {
-  const lovableKey = process.env["LOVABLE_API_KEY"];
+  const apiKey = process.env["EXTERNAL_API_KEY"];
   const twilioKey = process.env["TWILIO_API_KEY"];
-  if (!lovableKey || !twilioKey) return null;
-  return { lovableKey, twilioKey };
+  if (!apiKey || !twilioKey) return null;
+  return { apiKey, twilioKey };
 }
 
 async function twilioSend(to: string, body: string, from: string | undefined, label: string): Promise<ChannelResult> {
@@ -33,7 +33,7 @@ async function twilioSend(to: string, body: string, from: string | undefined, la
     const res = await fetch(`${GATEWAY_URL}/Messages.json`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${creds.lovableKey}`,
+        Authorization: `Bearer ${creds.apiKey}`,
         "X-Connection-Api-Key": creds.twilioKey,
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -77,14 +77,14 @@ export async function sendWhatsApp(to: string, body: string): Promise<ChannelRes
 }
 
 export async function sendEmail(to: string, subject: string, body: string, link?: string): Promise<ChannelResult> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
+  const apiKey = process.env["EXTERNAL_API_KEY"];
   const domain = process.env["EMAIL_SENDER_DOMAIN"];
   if (!apiKey || !domain) {
     return { ok: false, status: "not_configured", error: "Email sender domain not configured" };
   }
   try {
     // Resolved at runtime so the build succeeds before the email package is installed.
-    const specifier = "@lovable.dev/email-js";
+    const specifier = "nodemailer";
     const mod = (await import(/* @vite-ignore */ specifier).catch(() => null)) as {
       sendEmail?: (args: unknown) => Promise<{ id?: string }>;
     } | null;
@@ -98,9 +98,9 @@ export async function sendEmail(to: string, subject: string, body: string, link?
       ${link ? `<p><a href="${escapeHtml(link)}" style="display:inline-block;background:#1FA463;color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none">Open GO FARM WORK</a></p>` : ""}
     </div>`;
     const result = await send({ apiKey, domain, to, subject, html, text: body });
-    return { ok: true, status: "sent", provider: "lovable-email", providerMessageId: result?.id };
+    return { ok: true, status: "sent", provider: "external-email", providerMessageId: result?.id };
   } catch (err) {
-    return { ok: false, status: "failed", provider: "lovable-email", error: (err as Error).message };
+    return { ok: false, status: "failed", provider: "external-email", error: (err as Error).message };
   }
 }
 

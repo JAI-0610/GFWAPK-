@@ -18,10 +18,10 @@ export const askFarmhand = createServerFn({ method: "POST" })
     };
   })
   .handler(async ({ data }) => {
-    const key = process.env["LOVABLE_API_KEY"];
+    const key = process.env["EXTERNAL_API_KEY"];
     if (!key) throw new Error("AI is not configured");
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

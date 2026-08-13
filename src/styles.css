@@ -199,10 +199,10 @@
 
 
 
-/* Hide Lovable badge */
-#lovable-badge,
-#lovable-badge-container,
-[id*='lovable'],
-lovable-badge {
+/* Hide Project badge */
+#app-badge,
+#app-badge-container,
+[id*='app'],
+app-badge {
   display: none !important;
 }
