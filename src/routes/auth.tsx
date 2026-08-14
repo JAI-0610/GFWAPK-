@@ -187,26 +187,7 @@ function AuthPage() {
               </div>
             </div>
 
-            {/* Floating Stats Card */}
-            <div className="mt-12 inline-flex items-center justify-between gap-8 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md p-6 max-w-fit">
-              <div className="text-center px-4">
-                <Users className="size-6 text-white mx-auto mb-2 opacity-80" />
-                <div className="text-2xl font-bold text-white">25K+</div>
-                <div className="text-xs text-green-100 uppercase tracking-wider font-semibold mt-1">Workers</div>
-              </div>
-              <div className="w-px h-12 bg-white/20" />
-              <div className="text-center px-4">
-                <Tractor className="size-6 text-white mx-auto mb-2 opacity-80" />
-                <div className="text-2xl font-bold text-white">10K+</div>
-                <div className="text-xs text-green-100 uppercase tracking-wider font-semibold mt-1">Farms</div>
-              </div>
-              <div className="w-px h-12 bg-white/20" />
-              <div className="text-center px-4">
-                <Briefcase className="size-6 text-white mx-auto mb-2 opacity-80" />
-                <div className="text-2xl font-bold text-white">50K+</div>
-                <div className="text-xs text-green-100 uppercase tracking-wider font-semibold mt-1">Jobs Completed</div>
-              </div>
-            </div>
+
           </div>
         </div>
 
@@ -267,7 +248,7 @@ function AuthPage() {
                 </div>
                 {!isSignup && (
                   <div className="flex justify-end pt-1">
-                    <a href="#" className="text-[13px] font-bold text-[#155d27] hover:underline">Forgot password?</a>
+                    <button type="button" onClick={(e) => { e.preventDefault(); toast.info("Password reset coming soon!"); }} className="text-[13px] font-bold text-[#155d27] hover:underline">Forgot password?</button>
                   </div>
                 )}
               </div>
@@ -293,7 +274,7 @@ function AuthPage() {
               </div>
 
               {!isSignup && (
-                <div className="flex items-center justify-between pt-2">
+                <div className="flex items-center pt-2">
                   <div className="flex items-center space-x-2">
                     <input 
                       type="checkbox" 
@@ -306,9 +287,6 @@ function AuthPage() {
                       Remember me
                     </label>
                   </div>
-                  <a href="#" className="text-sm font-bold text-[#155d27] hover:underline">
-                    Use passwordless login
-                  </a>
                 </div>
               )}
 
