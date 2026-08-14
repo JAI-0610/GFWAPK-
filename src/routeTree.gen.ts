@@ -17,6 +17,7 @@ import { Route as BrowseRouteImport } from './routes/browse'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAlertsRouteImport } from './routes/_authenticated/alerts'
 import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated/assistant'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -71,6 +72,11 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAlertsRoute = AuthenticatedAlertsRouteImport.update({
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
+  '/terms': typeof TermsRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/assistant': typeof AuthenticatedAssistantRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
+  '/terms': typeof TermsRoute
   '/alerts': typeof AuthenticatedAlertsRoute
   '/assistant': typeof AuthenticatedAssistantRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
+  '/terms': typeof TermsRoute
   '/_authenticated/alerts': typeof AuthenticatedAlertsRoute
   '/_authenticated/assistant': typeof AuthenticatedAssistantRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -242,6 +251,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/how-it-works'
     | '/pricing'
+    | '/terms'
     | '/alerts'
     | '/assistant'
     | '/dashboard'
@@ -267,6 +277,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/how-it-works'
     | '/pricing'
+    | '/terms'
     | '/alerts'
     | '/assistant'
     | '/dashboard'
@@ -293,6 +304,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/how-it-works'
     | '/pricing'
+    | '/terms'
     | '/_authenticated/alerts'
     | '/_authenticated/assistant'
     | '/_authenticated/dashboard'
@@ -320,6 +332,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   HowItWorksRoute: typeof HowItWorksRoute
   PricingRoute: typeof PricingRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -378,6 +391,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/alerts': {
@@ -545,6 +565,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   HowItWorksRoute: HowItWorksRoute,
   PricingRoute: PricingRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

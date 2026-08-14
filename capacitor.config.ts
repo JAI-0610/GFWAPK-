@@ -3,7 +3,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'com.gofarmwork.app',
   appName: 'GoFarmWork',
-  webDir: '.output/public'
+  webDir: 'dist',
 };
 
 export default config;
