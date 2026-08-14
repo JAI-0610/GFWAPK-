@@ -70,7 +70,7 @@ export function SiteFooter() {
           <p>© {new Date().getFullYear()} GO FARM WORK. Built for rural India.</p>
           <div className="flex flex-wrap gap-5">
             <Link to="/about">Privacy</Link>
-            <Link to="/about">Terms</Link>
+            <Link to="/terms">Terms</Link>
             <Link to="/auth" search={{ role: "worker" }}>
               Sign in
             </Link>
