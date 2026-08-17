@@ -206,6 +206,13 @@ function AuthPage() {
                     selected={role === "landlord"}
                     onClick={() => setRole("landlord")}
                   />
+                  <RoleCard
+                    icon={<div className="flex -space-x-2"><UserCircle2 className="size-5" /><Sprout className="size-5" /></div>}
+                    title="Both"
+                    description="I want to hire workers and find work"
+                    selected={role === "both"}
+                    onClick={() => setRole("both")}
+                  />
                 </div>
               </div>
             )}
