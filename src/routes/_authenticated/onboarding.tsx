@@ -110,7 +110,7 @@ function Onboarding() {
       setLoadingLocations(true);
       try {
         const encodedState = encodeURIComponent(state);
-        const url = `https://cdn.jsdelivr.net/gh/pranshumaheshwari/indian-cities-and-villages@master/By%20States/${encodedState}.json`;
+        const url = `/locations/${encodedState}.json`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("Failed to fetch locations");
         const data = await res.json();
