@@ -29,8 +29,8 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"worker" | "landlord">(
-    (search.role as "worker" | "landlord") || "worker",
+  const [role, setRole] = useState<"worker" | "landlord" | "both">(
+    (search.role as "worker" | "landlord" | "both") || "worker",
   );
   
   const [busy, setBusy] = useState(false);
