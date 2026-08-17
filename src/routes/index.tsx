@@ -28,6 +28,50 @@ const onboardingSlides = [
   },
 ];
 
+// Component for subtle floating leaf/light particles
+const FloatingParticles = () => {
+  return (
+    <div className="absolute inset-0 z-40 pointer-events-none">
+      {[...Array(15)].map((_, i) => {
+        const randomAngle = Math.random() * Math.PI * 2;
+        const radius = 160 + Math.random() * 40; // Spawn outside the logo
+        const startX = 150 + Math.cos(randomAngle) * radius;
+        const startY = 150 + Math.sin(randomAngle) * radius;
+        const randomDelay = Math.random() * 2 + 3.0; // Start during "Settle" phase
+
+        return (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{ 
+              left: startX, 
+              top: startY,
+              width: Math.random() * 4 + 2,
+              height: Math.random() * 4 + 2,
+              backgroundColor: i % 3 === 0 ? "#fef08a" : "#4ade80", // mix of gold and bright green
+              filter: "blur(1px)",
+            }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ 
+              opacity: [0, 0.8, 0], 
+              y: [0, -40], 
+              x: [0, Math.sin(i) * 30],
+              scale: [0, 1.5, 0],
+              rotate: [0, 180]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              delay: randomDelay,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 function MobileOnboarding() {
   const [showSplash, setShowSplash] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -37,7 +81,7 @@ function MobileOnboarding() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 4500); // Extended for the full animation sequence
+    }, 5500); // 5.5s full sequence based on storyboard timing
     return () => clearTimeout(timer);
   }, []);
 
@@ -56,52 +100,91 @@ function MobileOnboarding() {
           <motion.div
             key="splash"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, filter: "blur(10px)" }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#FDFBF7]"
+            exit={{ opacity: 0, filter: "blur(15px)", scale: 1.1 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#041209] overflow-hidden" // Deep dark green background
           >
-            <div className="relative flex items-center justify-center size-[300px]">
-              {/* 1. Circle Outline drawing in */}
-              <svg className="absolute inset-0 size-full z-10" viewBox="0 0 300 300">
+            {/* Ambient background glow */}
+            <motion.div 
+              className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(74,222,128,0.15)_0%,transparent_60%)]"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 2.5, duration: 2 }}
+            />
+
+            <div className="relative flex items-center justify-center size-[320px]">
+              
+              {/* 1. START: Circle stroke appears with soft glow */}
+              <svg className="absolute inset-0 size-full z-10 drop-shadow-[0_0_12px_rgba(74,222,128,0.8)]" viewBox="0 0 320 320">
                 <motion.circle
-                  cx="150"
-                  cy="150"
-                  r="105"
-                  stroke="#1E3F2D"
-                  strokeWidth="3"
+                  cx="160"
+                  cy="160"
+                  r="145" // Outer badge ring matching logo.png ~48% radius
+                  stroke="#4ade80"
+                  strokeWidth="2.5"
                   fill="none"
-                  initial={{ pathLength: 0, opacity: 0, rotate: -90 }}
-                  animate={{ pathLength: 1, opacity: 1, rotate: -90 }}
-                  transition={{ duration: 1.2, ease: "easeInOut" }}
-                  style={{ originX: "50px", originY: "50px", transformOrigin: "150px 150px" }}
+                  initial={{ pathLength: 0, opacity: 0, rotate: -120 }}
+                  animate={{ pathLength: 1, opacity: 1, rotate: 90 }}
+                  transition={{ duration: 1.8, ease: "easeInOut" }}
+                  style={{ originX: "160px", originY: "160px" }}
+                />
+                <motion.circle
+                  cx="160"
+                  cy="160"
+                  r="105" // Inner farmer ring matching logo.png ~34% radius
+                  stroke="#fbbf24" // Subtle golden glow for inner ring
+                  strokeWidth="1"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0, rotate: 90 }}
+                  animate={{ pathLength: 1, opacity: 0.6, rotate: -90 }}
+                  transition={{ delay: 0.6, duration: 1.5, ease: "easeInOut" }}
+                  style={{ originX: "160px", originY: "160px" }}
                 />
               </svg>
 
-              {/* 2. Reveal Farmer (Center of logo.png) */}
+              {/* 2 & 3. REVEAL: Farmer and field scene fades in */}
+              {/* We use clip-path to isolate JUST the center of the original flat logo.png */}
               <motion.div
-                className="absolute inset-0 z-20 flex items-center justify-center overflow-hidden rounded-full"
-                style={{ clipPath: "circle(68% at 50% 50%)" }}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.2, duration: 1, ease: "easeOut" }}
+                className="absolute inset-0 z-20 flex items-center justify-center overflow-hidden"
+                style={{ clipPath: "circle(34% at 50% 50%)" }} 
+                initial={{ opacity: 0, scale: 0.85, filter: "brightness(1.5) blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "brightness(1) blur(0px)" }}
+                transition={{ delay: 1.5, duration: 1.2, ease: "easeOut" }}
               >
                 <img src="/logo.png" alt="Farmer Scene" className="w-full h-full object-contain" />
               </motion.div>
 
-              {/* 3. Text & Full Logo Appear (Full logo.png unmasked) */}
+              {/* 4. TEXT APPEAR: "GO FARM WORK" and "FARMING LIFE" fades in */}
+              {/* We reveal the outer ring of the flat logo.png using a slight rotation to simulate circular drawing */}
               <motion.div
-                className="absolute inset-0 z-30 flex items-center justify-center"
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 2.2, duration: 1, ease: "easeOut" }}
+                className="absolute inset-0 z-15 flex items-center justify-center overflow-hidden"
+                style={{ clipPath: "circle(49% at 50% 50%)" }} // Perfect circle crop to remove any square JPEG background
+                initial={{ opacity: 0, scale: 0.96, rotate: -15, filter: "blur(2px)" }}
+                animate={{ opacity: 1, scale: 1, rotate: 0, filter: "blur(0px)" }}
+                transition={{ delay: 2.5, duration: 1.2, ease: "easeOut" }}
               >
-                <img 
-                  src="/logo.png" 
-                  alt="Go Farm Work Logo" 
-                  className="w-full h-full object-contain" 
-                  style={{ filter: "drop-shadow(0 0 20px rgba(30, 63, 45, 0.25))" }} 
-                />
+                <img src="/logo.png" alt="Brand Text" className="w-full h-full object-contain" />
               </motion.div>
+
+              {/* 5 & 6. GLOW EFFECT: Add a subtle overlay highlight traveling across the badge */}
+              <motion.div
+                 className="absolute inset-0 z-30 overflow-hidden pointer-events-none rounded-full"
+                 style={{ clipPath: "circle(49% at 50% 50%)" }}
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 transition={{ delay: 3.5, duration: 0.5 }}
+              >
+                 <motion.div 
+                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent w-[200%] h-[200%] -left-[50%] -top-[50%]"
+                    initial={{ x: "-100%", y: "-100%" }}
+                    animate={{ x: "100%", y: "100%" }}
+                    transition={{ delay: 3.8, duration: 1.5, ease: "easeInOut" }}
+                 />
+              </motion.div>
+
+              {/* 7 & 8. NATURAL MOTION & SETTLE: Floating particles */}
+              <FloatingParticles />
+
             </div>
           </motion.div>
         ) : (
