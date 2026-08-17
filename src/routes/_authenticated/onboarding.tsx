@@ -101,30 +101,52 @@ function Onboarding() {
     }
   }, [profile, roles, initialized]);
 
+  const [locationFetchFailed, setLocationFetchFailed] = useState(false);
+
   useEffect(() => {
+    let controller = new AbortController();
+    
     async function fetchStateData() {
       if (!state) {
         setLocationData(null);
+        setLocationFetchFailed(false);
         return;
       }
       setLoadingLocations(true);
+      setLocationFetchFailed(false);
+      
       try {
         const encodedState = encodeURIComponent(state);
         const url = `/locations/${encodedState}.json`;
-        const res = await fetch(url);
+        
+        // 5 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
         if (!res.ok) throw new Error("Failed to fetch locations");
         const data = await res.json();
         setLocationData(data);
-      } catch (err) {
+      } catch (err: any) {
         console.error(err);
-        toast.error("Could not load districts for this state.");
+        if (err.name === 'AbortError') {
+          toast.error("Location data loading timed out. Switched to manual entry.");
+        } else {
+          toast.error("Could not load districts. Switched to manual entry.");
+        }
+        setLocationFetchFailed(true);
       } finally {
         setLoadingLocations(false);
       }
     }
+    
     fetchStateData();
+    
+    return () => {
+      controller.abort();
+    };
   }, [state]);
-
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploading(true);
@@ -175,7 +197,7 @@ function Onboarding() {
     }
     setBusy(true);
     try {
-      const finalVillage = village === "Other" ? customVillage.trim() : village.trim();
+      const finalVillage = (!locationFetchFailed && village === "Other") ? customVillage.trim() : village.trim();
       const { error: pErr } = await supabase
         .from("profiles")
         .update({
@@ -451,52 +473,86 @@ function Onboarding() {
 
                         <div className="space-y-1.5">
                           <Label className="text-xs font-bold text-gray-700">District</Label>
-                          <select
-                            className="flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#155d27] disabled:opacity-50"
-                            value={district}
-                            onChange={(e) => {
-                              setDistrict(e.target.value);
-                              setTaluk("");
-                              setVillage("");
-                            }}
-                            disabled={!state || loadingLocations}
-                          >
-                            <option value="">Select District</option>
-                            {districtsList.map((d: string) => <option key={d} value={d}>{d}</option>)}
-                          </select>
+                          {locationFetchFailed ? (
+                            <Input 
+                              value={district} 
+                              onChange={(e) => {
+                                setDistrict(e.target.value);
+                                setTaluk("");
+                                setVillage("");
+                              }} 
+                              placeholder="Enter District Name manually"
+                              className="h-11 rounded-xl text-sm border-gray-200 shadow-sm" 
+                            />
+                          ) : (
+                            <select
+                              className="flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#155d27] disabled:opacity-50"
+                              value={district}
+                              onChange={(e) => {
+                                setDistrict(e.target.value);
+                                setTaluk("");
+                                setVillage("");
+                              }}
+                              disabled={!state || loadingLocations}
+                            >
+                              <option value="">Select District</option>
+                              {districtsList.map((d: string) => <option key={d} value={d}>{d}</option>)}
+                            </select>
+                          )}
                         </div>
 
                         <div className="space-y-1.5">
                           <Label className="text-xs font-bold text-gray-700">Taluk</Label>
-                          <select
-                            className="flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#155d27] disabled:opacity-50"
-                            value={taluk}
-                            onChange={(e) => {
-                              setTaluk(e.target.value);
-                              setVillage("");
-                            }}
-                            disabled={!district || loadingLocations}
-                          >
-                            <option value="">Select Taluk</option>
-                            {taluksList.map((t: string) => <option key={t} value={t}>{t}</option>)}
-                          </select>
+                          {locationFetchFailed ? (
+                            <Input 
+                              value={taluk} 
+                              onChange={(e) => {
+                                setTaluk(e.target.value);
+                                setVillage("");
+                              }} 
+                              placeholder="Enter Taluk Name manually"
+                              className="h-11 rounded-xl text-sm border-gray-200 shadow-sm" 
+                            />
+                          ) : (
+                            <select
+                              className="flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#155d27] disabled:opacity-50"
+                              value={taluk}
+                              onChange={(e) => {
+                                setTaluk(e.target.value);
+                                setVillage("");
+                              }}
+                              disabled={!district || loadingLocations}
+                            >
+                              <option value="">Select Taluk</option>
+                              {taluksList.map((t: string) => <option key={t} value={t}>{t}</option>)}
+                            </select>
+                          )}
                         </div>
 
                         <div className="space-y-1.5">
                           <Label className="text-xs font-bold text-gray-700">Village</Label>
-                          <select
-                            className="flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#155d27] disabled:opacity-50"
-                            value={village}
-                            onChange={(e) => setVillage(e.target.value)}
-                            disabled={!taluk || loadingLocations}
-                          >
-                            <option value="">Select Village</option>
-                            {villagesList.map((v: string) => <option key={v} value={v}>{v}</option>)}
-                            <option value="Other">Other (Type manually)</option>
-                          </select>
+                          {locationFetchFailed ? (
+                            <Input 
+                              value={village} 
+                              onChange={(e) => setVillage(e.target.value)} 
+                              placeholder="Enter Village Name manually"
+                              className="h-11 rounded-xl text-sm border-gray-200 shadow-sm" 
+                            />
+                          ) : (
+                            <select
+                              className="flex h-11 w-full rounded-xl border border-gray-200 bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#155d27] disabled:opacity-50"
+                              value={village}
+                              onChange={(e) => setVillage(e.target.value)}
+                              disabled={!taluk || loadingLocations}
+                            >
+                              <option value="">Select Village</option>
+                              {villagesList.map((v: string) => <option key={v} value={v}>{v}</option>)}
+                              <option value="Other">Other (Type manually)</option>
+                            </select>
+                          )}
                         </div>
 
-                        {village === "Other" && (
+                        {!locationFetchFailed && village === "Other" && (
                           <div className="space-y-1.5 pt-2">
                             <Label className="text-xs font-bold text-gray-700">Enter Village Name</Label>
                             <Input 
