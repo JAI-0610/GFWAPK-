@@ -11,12 +11,12 @@ export default defineConfig({
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart({
       server: { 
-        preset: "netlify",
+        preset: "cloudflare_pages",
         entry: "server" 
       }
     }),
     nitro({
-      preset: "netlify"
+      preset: "cloudflare_pages"
     }),
     react(),
   ],
