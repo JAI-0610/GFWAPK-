@@ -37,7 +37,7 @@ function MobileOnboarding() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2000);
+    }, 4500); // Extended for the full animation sequence
     return () => clearTimeout(timer);
   }, []);
 
@@ -56,23 +56,53 @@ function MobileOnboarding() {
           <motion.div
             key="splash"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-primary"
+            exit={{ opacity: 0, filter: "blur(10px)" }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#FDFBF7]"
           >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, type: "spring", bounce: 0.5 }}
-              className="flex flex-col items-center gap-4"
-            >
-              <div className="flex size-24 items-center justify-center rounded-3xl bg-white shadow-2xl">
-                <Sprout className="size-12 text-primary" />
-              </div>
-              <h1 className="text-2xl font-extrabold tracking-tight text-white">
-                GO FARM WORK
-              </h1>
-            </motion.div>
+            <div className="relative flex items-center justify-center size-[300px]">
+              {/* 1. Circle Outline drawing in */}
+              <svg className="absolute inset-0 size-full z-10" viewBox="0 0 300 300">
+                <motion.circle
+                  cx="150"
+                  cy="150"
+                  r="105"
+                  stroke="#1E3F2D"
+                  strokeWidth="3"
+                  fill="none"
+                  initial={{ pathLength: 0, opacity: 0, rotate: -90 }}
+                  animate={{ pathLength: 1, opacity: 1, rotate: -90 }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                  style={{ originX: "50px", originY: "50px", transformOrigin: "150px 150px" }}
+                />
+              </svg>
+
+              {/* 2. Reveal Farmer (Center of logo.png) */}
+              <motion.div
+                className="absolute inset-0 z-20 flex items-center justify-center overflow-hidden rounded-full"
+                style={{ clipPath: "circle(68% at 50% 50%)" }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.2, duration: 1, ease: "easeOut" }}
+              >
+                <img src="/logo.png" alt="Farmer Scene" className="w-full h-full object-contain" />
+              </motion.div>
+
+              {/* 3. Text & Full Logo Appear (Full logo.png unmasked) */}
+              <motion.div
+                className="absolute inset-0 z-30 flex items-center justify-center"
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 2.2, duration: 1, ease: "easeOut" }}
+              >
+                <img 
+                  src="/logo.png" 
+                  alt="Go Farm Work Logo" 
+                  className="w-full h-full object-contain" 
+                  style={{ filter: "drop-shadow(0 0 20px rgba(30, 63, 45, 0.25))" }} 
+                />
+              </motion.div>
+            </div>
           </motion.div>
         ) : (
           <motion.div
