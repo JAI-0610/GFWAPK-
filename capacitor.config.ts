@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'GoFarmWork',
   webDir: 'dist',
   server: {
-    url: 'https://gofarmwork.netlify.app',
+    url: 'https://gfwapk.pages.dev',
     cleartext: true
   }
 };
