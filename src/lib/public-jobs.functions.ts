@@ -24,8 +24,8 @@ export type PublicJob = {
 };
 
 export const listPublicJobs = createServerFn({ method: "GET" }).handler(async () => {
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-  const url = process.env["SUPABASE_URL"]!;
+  const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4anNkZndhc3RzdHhwdHJ3ZnVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0NTQ5ODUsImV4cCI6MjEwMjAzMDk4NX0.cA8xXCi5aoMdA6HNWlt40Q7vW3yk3Wy9IsdOGVhJNnE";
+  const url = "https://jxjsdfwaststxptrwfur.supabase.co";
   const supabasePublic = createClient<Database>(url, key, {
     auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
     global: {
