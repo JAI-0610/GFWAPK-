@@ -22,7 +22,7 @@ const onboardingSlides = [
   {
     id: "welcome",
     type: "fullscreen" as SlideType,
-    bgImage: "/assets/welcome_landscape.jpg",
+    bgImage: "/assets/welcome_landscape_real.jpg",
     title: (
       <>
         Welcome to<br />
@@ -34,7 +34,7 @@ const onboardingSlides = [
   {
     id: "manage-crops",
     type: "feature" as SlideType,
-    image: "/assets/crop_sprout.jpg",
+    image: "/assets/manage_crops_real.jpg",
     title: "Manage Your Crops",
     description: "Track, monitor and get better insights to grow healthy crops.",
     card: {
@@ -46,6 +46,7 @@ const onboardingSlides = [
   {
     id: "market-prices",
     type: "feature" as SlideType,
+    image: "/assets/market_prices_real.jpg",
     title: "Know Market Prices",
     description: "Get updated market prices and sell your produce at the right time.",
     // Custom render for the chart visual
@@ -70,14 +71,14 @@ const onboardingSlides = [
   {
     id: "community",
     type: "fullscreen" as SlideType,
-    bgImage: "/assets/farming_community.jpg",
+    bgImage: "/assets/farming_community_real.jpg",
     title: "Join Farming Community",
     description: "Connect with farmers, share knowledge and grow together.",
   },
   {
     id: "final",
     type: "final" as SlideType,
-    bgImage: "/assets/get_started_landscape.jpg",
+    bgImage: "/assets/get_started_real.jpg",
     title: (
       <>
         Let’s Grow<br />
@@ -242,65 +243,83 @@ export default function MobileOnboarding() {
 
             <div className="relative flex flex-col items-center justify-center">
               <div className="relative size-[300px]">
-                <svg className="absolute inset-0 size-full z-10 drop-shadow-[0_0_12px_rgba(74,222,128,0.8)]" viewBox="0 0 320 320">
+                {/* Single Continuous Circular Frame with Leaves */}
+                <svg className="absolute inset-0 size-full z-10 drop-shadow-[0_0_15px_rgba(74,222,128,0.3)]" viewBox="0 0 320 320">
                   <motion.circle
                     cx="160"
                     cy="160"
-                    r="145"
+                    r="120"
                     stroke="#4ade80"
-                    strokeWidth="2.5"
+                    strokeWidth="3.5"
                     fill="none"
-                    initial={{ pathLength: 0, opacity: 0, rotate: -120 }}
+                    initial={{ pathLength: 0, opacity: 0, rotate: -90 }}
                     animate={{ pathLength: 1, opacity: 1, rotate: 90 }}
-                    transition={{ duration: 1.8, ease: "easeInOut" }}
+                    transition={{ duration: 1.5, ease: "easeInOut" }}
                     style={{ originX: "160px", originY: "160px" }}
                   />
-                  <motion.circle
-                    cx="160"
-                    cy="160"
-                    r="105"
-                    stroke="#fbbf24"
-                    strokeWidth="1"
+                  {/* Left Leaf Branch */}
+                  <motion.path
+                    d="M 120 273 C 90 285, 70 260, 60 230"
+                    stroke="#4ade80"
+                    strokeWidth="3"
                     fill="none"
-                    initial={{ pathLength: 0, opacity: 0, rotate: 90 }}
-                    animate={{ pathLength: 1, opacity: 0.6, rotate: -90 }}
-                    transition={{ delay: 0.6, duration: 1.5, ease: "easeInOut" }}
-                    style={{ originX: "160px", originY: "160px" }}
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+                  />
+                  <motion.path
+                    d="M 90 255 C 70 240, 80 220, 95 230"
+                    fill="#4ade80"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.5, duration: 0.5 }}
+                    style={{ originX: "90px", originY: "255px" }}
+                  />
+                  {/* Right Leaf Branch */}
+                  <motion.path
+                    d="M 200 273 C 230 285, 250 260, 260 230"
+                    stroke="#4ade80"
+                    strokeWidth="3"
+                    fill="none"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{ pathLength: 1, opacity: 1 }}
+                    transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+                  />
+                  <motion.path
+                    d="M 230 255 C 250 240, 240 220, 225 230"
+                    fill="#4ade80"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 1.5, duration: 0.5 }}
+                    style={{ originX: "230px", originY: "255px" }}
                   />
                 </svg>
 
+                {/* Perfect Center Logo Fade (No clipping circles) */}
                 <motion.div
-                  className="absolute inset-0 z-20 flex items-center justify-center overflow-hidden"
-                  style={{ clipPath: "circle(34% at 50% 50%)" }} 
-                  initial={{ opacity: 0, scale: 0.85, filter: "brightness(1.5) blur(4px)" }}
-                  animate={{ opacity: 1, scale: 1, filter: "brightness(1) blur(0px)" }}
-                  transition={{ delay: 1.5, duration: 1.2, ease: "easeOut" }}
+                  className="absolute inset-0 z-20 flex items-center justify-center p-8"
+                  initial={{ opacity: 0, scale: 0.8, filter: "brightness(1.5)" }}
+                  animate={{ opacity: 1, scale: 1, filter: "brightness(1)" }}
+                  transition={{ delay: 1.6, duration: 1.2, ease: "easeOut" }}
                 >
-                  <img src="/logo.png" alt="Farmer Scene" className="w-full h-full object-contain" />
+                  <img src="/logo.png" alt="Go Farm Work Logo" className="w-[190px] h-[190px] object-contain" />
                 </motion.div>
 
-                <motion.div
-                  className="absolute inset-0 z-15 flex items-center justify-center overflow-hidden"
-                  style={{ clipPath: "circle(49% at 50% 50%)" }}
-                  initial={{ opacity: 0, scale: 0.96, rotate: -15, filter: "blur(2px)" }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0, filter: "blur(0px)" }}
-                  transition={{ delay: 2.5, duration: 1.2, ease: "easeOut" }}
-                >
-                  <img src="/logo.png" alt="Brand Text" className="w-full h-full object-contain" />
-                </motion.div>
-
+                {/* Light Sweep Effect */}
                 <motion.div
                    className="absolute inset-0 z-30 overflow-hidden pointer-events-none rounded-full"
-                   style={{ clipPath: "circle(49% at 50% 50%)" }}
+                   style={{ clipPath: "circle(42% at 50% 50%)" }}
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
-                   transition={{ delay: 3.5, duration: 0.5 }}
+                   transition={{ delay: 2.8, duration: 0.5 }}
                 >
                    <motion.div 
                       className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent w-[200%] h-[200%] -left-[50%] -top-[50%]"
                       initial={{ x: "-100%", y: "-100%" }}
                       animate={{ x: "100%", y: "100%" }}
-                      transition={{ delay: 3.8, duration: 1.5, ease: "easeInOut" }}
+                      transition={{ delay: 3.0, duration: 1.5, ease: "easeInOut" }}
                    />
                 </motion.div>
                 <FloatingParticles />
@@ -309,13 +328,23 @@ export default function MobileOnboarding() {
               {/* Brand Name & Tagline under Logo */}
               <motion.div 
                 className="mt-8 flex flex-col items-center text-center z-40"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 3.5, duration: 1, ease: "easeOut" }}
               >
-                <h1 className="text-3xl font-bold tracking-wide text-[#FDFBF7]">Go Farm Work</h1>
-                <p className="mt-2 text-sm font-medium text-[#4ade80] tracking-wider uppercase">Farming Life, Better Life</p>
-                <div className="mt-4"><Sprout className="size-5 text-[#4ade80]/60" /></div>
+                <motion.h1 
+                  className="text-3xl font-bold tracking-wide text-[#FDFBF7]"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
+                >
+                  GO FARM WORK
+                </motion.h1>
+                <motion.p 
+                  className="mt-2 text-sm font-medium text-[#4ade80] tracking-wider uppercase"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 2.8, duration: 0.8, ease: "easeOut" }}
+                >
+                  Farming Life, Better Life
+                </motion.p>
               </motion.div>
             </div>
           </motion.div>
@@ -402,11 +431,19 @@ export default function MobileOnboarding() {
 
                       {/* Hero Image/Chart Area */}
                       {slide.isChart ? (
-                        <PriceChart />
+                        <div className="relative w-full aspect-square rounded-3xl overflow-hidden mb-6 shadow-2xl bg-[#041209]">
+                          <img src={slide.image} className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" />
+                          <div className="absolute inset-0 bg-[#041209]/40 backdrop-blur-sm" />
+                          <div className="absolute inset-x-0 bottom-4 px-4 z-10 flex justify-center">
+                            <div className="w-[90%] bg-[#071d11]/80 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-white/10 p-1">
+                              <PriceChart />
+                            </div>
+                          </div>
+                        </div>
                       ) : (
                         <div className="relative w-full aspect-square rounded-3xl overflow-hidden mb-6 shadow-2xl">
                           <img src={slide.image} className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#041209] to-transparent opacity-60" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#041209] via-[#041209]/30 to-transparent opacity-80" />
                         </div>
                       )}
 
